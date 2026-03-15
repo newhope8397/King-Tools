@@ -3,207 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>KingTools - Smart Online Tools</title>
-
 <link rel="stylesheet" href="css/style.css">
-
-<style>
-
-/* Basic Reset */
-
-body{
-font-family: Arial, sans-serif;
-margin:0;
-background:#0f172a;
-color:white;
-}
-
-/* Header */
-
-header{
-padding:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:#020617;
-}
-
-.logo{
-font-size:24px;
-font-weight:bold;
-color:#38bdf8;
-}
-
-.menu{
-font-size:22px;
-cursor:pointer;
-}
-
-/* Hero */
-
-.hero{
-text-align:center;
-padding:60px 20px;
-}
-
-.hero h1{
-font-size:36px;
-margin-bottom:10px;
-}
-
-.hero p{
-color:#94a3b8;
-}
-
-/* Tool Cards */
-
-.tools{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-padding:40px;
-}
-
-.card{
-background:#1e293b;
-padding:25px;
-border-radius:12px;
-transition:0.3s;
-text-align:center;
-}
-
-.card:hover{
-transform:translateY(-5px);
-background:#334155;
-}
-
-.card h3{
-margin-bottom:10px;
-}
-
-.card p{
-color:#94a3b8;
-font-size:14px;
-}
-
-.card a{
-display:inline-block;
-margin-top:15px;
-padding:10px 18px;
-background:#38bdf8;
-color:black;
-text-decoration:none;
-border-radius:8px;
-font-weight:bold;
-}
-
-/* Future Tools */
-
-.future{
-text-align:center;
-padding:40px;
-}
-
-.future h2{
-margin-bottom:20px;
-}
-
-.future-list{
-display:flex;
-justify-content:center;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.future-item{
-background:#1e293b;
-padding:12px 18px;
-border-radius:8px;
-}
-
-/* Footer */
-
-footer{
-text-align:center;
-padding:20px;
-background:#020617;
-color:#94a3b8;
-}
-
-</style>
-
 </head>
-
 <body>
 
+<!-- Navbar -->
 <header>
-
-<div class="logo">KingTools</div>
-
-<div class="menu">⋮</div>
-
+  <div class="logo">KingTools 👑</div>
+  <nav class="nav-links">
+    <a href="#tools">Tools</a>
+    <a href="#future">Coming Soon</a>
+  </nav>
+  <div class="menu">☰</div>
 </header>
 
+<!-- Hero Section -->
 <section class="hero">
-
-<h1>Powerful Tools for Everyone</h1>
-
-<p>Fast, simple and modern tools to improve productivity.</p>
-
+  <h1>Powerful Tools for Everyone</h1>
+  <p>Fast, simple, and modern tools to improve productivity.</p>
+  <a href="#tools" class="btn">Explore Tools</a>
 </section>
 
-<section class="tools">
-
-<!-- Password Generator -->
-
-<div class="card">
-
-<h3>Password Generator</h3>
-
-<p>Create secure strong passwords instantly.</p>
-
-<a href="tools/password-generator.html">Open Tool</a>
-
-</div>
-
-<!-- Image Studio -->
-
-<div class="card">
-
-<h3>Image Studio</h3>
-
-<p>Resize, compress and edit images easily.</p>
-
-<a href="tools/image-studio.html">Open Tool</a>
-
-</div>
-
+<!-- Tools Section -->
+<section id="tools">
+  <h2>Our Tools</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="images/password-generator.png" alt="Password Generator">
+      <h3>Password Generator</h3>
+      <p>Create secure strong passwords instantly.</p>
+      <a href="tools/password-generator.html">Open Tool</a>
+    </div>
+    <div class="card">
+      <img src="images/image-studio.png" alt="Image Studio">
+      <h3>Image Studio</h3>
+      <p>Resize, compress and edit images easily.</p>
+      <a href="tools/image-studio.html">Open Tool</a>
+    </div>
+  </div>
 </section>
 
-<section class="future">
-
-<h2>Coming Soon</h2>
-
-<div class="future-list">
-
-<div class="future-item">PDF Studio</div>
-
-<div class="future-item">QR Generator</div>
-
-<div class="future-item">Text Tools</div>
-
-<div class="future-item">Color Tools</div>
-
-</div>
-
+<!-- Future Tools Section -->
+<section id="future">
+  <h2>Coming Soon</h2>
+  <div class="cards">
+    <div class="card">PDF Studio</div>
+    <div class="card">QR Generator</div>
+    <div class="card">Text Tools</div>
+    <div class="card">Color Tools</div>
+  </div>
 </section>
 
+<!-- Footer -->
 <footer>
-
-<p>© 2026 KingTools. All rights reserved.</p>
-
+  <p>Connect with us:</p>
+  <a href="#"><img src="images/whatsapp.png" alt="WhatsApp" width="30"></a>
+  <a href="#"><img src="images/instagram.png" alt="Instagram" width="30"></a>
+  <a href="#"><img src="images/facebook.png" alt="Facebook" width="30"></a>
+  <p>© 2026 KingTools. All rights reserved.</p>
 </footer>
+
+<script>
+// Optional: toggle light mode
+function toggleLightMode() {
+  document.body.classList.toggle('light-mode');
+}
+</script>
 
 </body>
 </html>
