@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KingTools 👑</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="light">
+
+<header>
+<div class="title-container">
+  <h1 id="main-title">KingTools 👑</h1>
+  <button id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+</div>
+
+<input type="text" id="searchBar" placeholder="Search tools..." onkeyup="searchTool()">
+</header>
+
+<section class="tool-categories" id="toolList">
+
+<div class="tool">
+<a href="tools/pdf-to-word.html">
+<img src="images/icons/pdf.png" alt="PDF to Word">
+<h3>PDF to Word</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/word-to-pdf.html">
+<img src="images/icons/word.png" alt="Word to PDF">
+<h3>Word to PDF</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/compress-pdf.html">
+<img src="images/icons/compress.png" alt="Compress PDF">
+<h3>Compress PDF</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/merge-pdf.html">
+<img src="images/icons/merge.png" alt="Merge PDF">
+<h3>Merge PDF</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/jpg-to-pdf.html">
+<img src="images/icons/jpg.png" alt="JPG to PDF">
+<h3>JPG to PDF</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/remove-bg.html">
+<img src="images/icons/bg.png" alt="Remove Background">
+<h3>Remove Background</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/image-resizer.html">
+<img src="images/icons/resize.png" alt="Image Resizer">
+<h3>Image Resizer</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/qr-generator.html">
+<img src="images/icons/qr.png" alt="QR Generator">
+<h3>QR Code Generator</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/age-calculator.html">
+<img src="images/icons/age.png" alt="Age Calculator">
+<h3>Age Calculator</h3>
+</a>
+</div>
+
+<div class="tool">
+<a href="tools/password-generator.html">
+<img src="images/icons/password.png" alt="Password Generator">
+<h3>Password Generator</h3>
+</a>
+</div>
+
+</section>
+
+<footer>
+<p>© 2026 KingTools 👑 | All rights reserved</p>
+</footer>
+
+<script src="js/script.js"></script>
+
+<script>
+// Search function
+function searchTool() {
+  let input = document.getElementById('searchBar').value.toLowerCase();
+  let tools = document.getElementById('toolList').getElementsByClassName('tool');
+  for (let i = 0; i < tools.length; i++) {
+    let title = tools[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+    tools[i].style.display = title.includes(input) ? "" : "none";
+  }
+}
+
+// Theme toggle
+function toggleTheme() {
+  const body = document.body;
+  body.classList.toggle("dark");
+  if(body.classList.contains("dark")){
+    document.getElementById('theme-toggle').innerText = "☀️ Light Mode";
+  } else {
+    document.getElementById('theme-toggle').innerText = "🌙 Dark Mode";
+  }
+}
+</script>
+
+</body>
+</html>
