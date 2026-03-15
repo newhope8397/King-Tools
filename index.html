@@ -3,122 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KingTools 👑</title>
+
+<title>KingTools - Smart Online Tools</title>
+
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+
+/* Basic Reset */
+
+body{
+font-family: Arial, sans-serif;
+margin:0;
+background:#0f172a;
+color:white;
+}
+
+/* Header */
+
+header{
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#020617;
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.menu{
+font-size:22px;
+cursor:pointer;
+}
+
+/* Hero */
+
+.hero{
+text-align:center;
+padding:60px 20px;
+}
+
+.hero h1{
+font-size:36px;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#94a3b8;
+}
+
+/* Tool Cards */
+
+.tools{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+padding:40px;
+}
+
+.card{
+background:#1e293b;
+padding:25px;
+border-radius:12px;
+transition:0.3s;
+text-align:center;
+}
+
+.card:hover{
+transform:translateY(-5px);
+background:#334155;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.card p{
+color:#94a3b8;
+font-size:14px;
+}
+
+.card a{
+display:inline-block;
+margin-top:15px;
+padding:10px 18px;
+background:#38bdf8;
+color:black;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
+}
+
+/* Future Tools */
+
+.future{
+text-align:center;
+padding:40px;
+}
+
+.future h2{
+margin-bottom:20px;
+}
+
+.future-list{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.future-item{
+background:#1e293b;
+padding:12px 18px;
+border-radius:8px;
+}
+
+/* Footer */
+
+footer{
+text-align:center;
+padding:20px;
+background:#020617;
+color:#94a3b8;
+}
+
+</style>
+
 </head>
-<body class="light">
+
+<body>
 
 <header>
-<div class="title-container">
-  <h1 id="main-title">KingTools 👑</h1>
-  <button id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
-</div>
 
-<input type="text" id="searchBar" placeholder="Search tools..." onkeyup="searchTool()">
+<div class="logo">KingTools</div>
+
+<div class="menu">⋮</div>
+
 </header>
 
-<section class="tool-categories" id="toolList">
+<section class="hero">
 
-<div class="tool">
-<a href="tools/pdf-to-word.html">
-<img src="images/icons/pdf.png" alt="PDF to Word">
-<h3>PDF to Word</h3>
-</a>
-</div>
+<h1>Powerful Tools for Everyone</h1>
 
-<div class="tool">
-<a href="tools/word-to-pdf.html">
-<img src="images/icons/word.png" alt="Word to PDF">
-<h3>Word to PDF</h3>
-</a>
-</div>
+<p>Fast, simple and modern tools to improve productivity.</p>
 
-<div class="tool">
-<a href="tools/compress-pdf.html">
-<img src="images/icons/compress.png" alt="Compress PDF">
-<h3>Compress PDF</h3>
-</a>
-</div>
+</section>
 
-<div class="tool">
-<a href="tools/merge-pdf.html">
-<img src="images/icons/merge.png" alt="Merge PDF">
-<h3>Merge PDF</h3>
-</a>
-</div>
+<section class="tools">
 
-<div class="tool">
-<a href="tools/jpg-to-pdf.html">
-<img src="images/icons/jpg.png" alt="JPG to PDF">
-<h3>JPG to PDF</h3>
-</a>
-</div>
+<!-- Password Generator -->
 
-<div class="tool">
-<a href="tools/remove-bg.html">
-<img src="images/icons/bg.png" alt="Remove Background">
-<h3>Remove Background</h3>
-</a>
-</div>
+<div class="card">
 
-<div class="tool">
-<a href="tools/image-studio.html">
-<img src="images/icons/resize.png" alt="Image Resizer">
-<h3>Image studio</h3>
-</a>
-</div>
-
-<div class="tool">
-<a href="tools/qr-generator.html">
-<img src="images/icons/qr.png" alt="QR Generator">
-<h3>QR Code Generator</h3>
-</a>
-</div>
-
-<div class="tool">
-<a href="tools/age-calculator.html">
-<img src="images/icons/age.png" alt="Age Calculator">
-<h3>Age Calculator</h3>
-</a>
-</div>
-
-<div class="tool">
-<a href="tools/password-generator.html">
-<img src="images/icons/password.png" alt="Password Generator">
 <h3>Password Generator</h3>
-</a>
+
+<p>Create secure strong passwords instantly.</p>
+
+<a href="tools/password-generator.html">Open Tool</a>
+
+</div>
+
+<!-- Image Studio -->
+
+<div class="card">
+
+<h3>Image Studio</h3>
+
+<p>Resize, compress and edit images easily.</p>
+
+<a href="tools/image-studio.html">Open Tool</a>
+
+</div>
+
+</section>
+
+<section class="future">
+
+<h2>Coming Soon</h2>
+
+<div class="future-list">
+
+<div class="future-item">PDF Studio</div>
+
+<div class="future-item">QR Generator</div>
+
+<div class="future-item">Text Tools</div>
+
+<div class="future-item">Color Tools</div>
+
 </div>
 
 </section>
 
 <footer>
-<p>© 2026 KingTools 👑 | All rights reserved</p>
+
+<p>© 2026 KingTools. All rights reserved.</p>
+
 </footer>
-
-<script src="js/script.js"></script>
-
-<script>
-// Search function
-function searchTool() {
-  let input = document.getElementById('searchBar').value.toLowerCase();
-  let tools = document.getElementById('toolList').getElementsByClassName('tool');
-  for (let i = 0; i < tools.length; i++) {
-    let title = tools[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
-    tools[i].style.display = title.includes(input) ? "" : "none";
-  }
-}
-
-// Theme toggle
-function toggleTheme() {
-  const body = document.body;
-  body.classList.toggle("dark");
-  if(body.classList.contains("dark")){
-    document.getElementById('theme-toggle').innerText = "☀️ Light Mode";
-  } else {
-    document.getElementById('theme-toggle').innerText = "🌙 Dark Mode";
-  }
-}
-</script>
 
 </body>
 </html>
