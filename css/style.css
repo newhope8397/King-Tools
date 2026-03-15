@@ -1,137 +1,199 @@
-/* ===== Base Styles ===== */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* ===========================
+   Reset & Base Styles
+=========================== */
+* {
     margin: 0;
     padding: 0;
-    transition: all 0.3s ease;
-    background-color: #fdfdfd; /* Light theme */
-    color: #111;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ===========================
+   Navbar / Header
+=========================== */
 header {
-    text-align: center;
-    padding: 30px 20px;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    color: #111;
-}
-
-header .title-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-#main-title {
-    font-size: 3em;
-    font-weight: bold;
-    background: linear-gradient(90deg, #ff6a00, #ee0979, #ff6a00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: titleColor 5s ease infinite;
-}
-
-@keyframes titleColor {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-#theme-toggle {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 25px;
-    background-color: #111;
+    background-color: #1e1e2f;
     color: #fff;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: all 0.3s ease;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-#theme-toggle:hover {
-    transform: scale(1.1);
-    background-color: #444;
+header .logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffcc00;
 }
 
-input#searchBar {
-    width: 80%;
-    max-width: 500px;
-    padding: 12px 15px;
-    margin-top: 20px;
-    border-radius: 30px;
-    border: 2px solid #ff6a00;
-    outline: none;
-    font-size: 1em;
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-/* ===== Tools Grid ===== */
-.tool-categories {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-    padding: 40px 20px;
+header nav a:hover {
+    color: #ffcc00;
 }
 
-.tool {
-    background-color: #fff;
-    border-radius: 20px;
+/* ===========================
+   Hero / Banner Section
+=========================== */
+.hero {
+    background-color: #ffcc00;
+    color: #1e1e2f;
     text-align: center;
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 80px 20px;
+    border-radius: 0 0 30px 30px;
 }
 
-.tool img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+}
+
+/* ===========================
+   Sections: Past, Present, Future
+=========================== */
+section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #1e1e2f;
+}
+
+section .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 12px;
     margin-bottom: 15px;
 }
 
-.tool h3 {
-    font-size: 1.1em;
-    margin: 0;
-    color: #111;
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #1e1e2f;
 }
 
-.tool:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+.card p {
+    font-size: 1rem;
+    color: #555;
 }
 
-/* ===== Footer ===== */
+/* ===========================
+   Buttons
+=========================== */
+button, .btn {
+    background-color: #1e1e2f;
+    color: #ffcc00;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 15px;
+}
+
+button:hover, .btn:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+/* ===========================
+   Footer
+=========================== */
 footer {
+    background-color: #1e1e2f;
+    color: #fff;
     text-align: center;
-    padding: 15px;
-    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
-    color: #111;
-    margin-top: 50px;
-    font-size: 0.9em;
+    padding: 40px 20px;
 }
 
-/* ===== Dark Theme ===== */
-body.dark {
-    background-color: #111;
-    color: #fdfdfd;
+footer p {
+    margin-bottom: 15px;
 }
 
-body.dark header {
-    background: linear-gradient(135deg, #333, #555);
-    color: #fdfdfd;
+footer a {
+    color: #ffcc00;
+    margin: 0 12px;
+    text-decoration: none;
+    font-size: 24px;
+    transition: color 0.3s;
 }
 
-body.dark input#searchBar {
-    background-color: #222;
-    border: 2px solid #ff6a00;
+footer a:hover {
     color: #fff;
 }
 
-body.dark .tool {
-    background-color: #222;
-    color: #fdfdfd;
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+    header nav {
+        margin-top: 15px;
+    }
+    .hero h1 {
+        font-size: 2rem;
+    }
+    section h2 {
+        font-size: 2rem;
+    }
+    .cards {
+        gap: 20px;
+    }
 }
 
-body.dark footer {
-    background: linear-gradient(135deg, #222, #444);
-    color: #fdfdfd;
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.7rem;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
+    .card h3 {
+        font-size: 1.3rem;
+    }
 }
