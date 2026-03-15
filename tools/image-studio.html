@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Studio - KingTools</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<h1>Image Studio</h1>
+
+<!-- Tool Selector -->
+
+<div class="tool-menu">
+<button onclick="showTool('compress')">Compress</button>
+<button onclick="showTool('resize')">Resize</button>
+<button onclick="showTool('convert')">Convert</button>
+<button onclick="showTool('crop')">Crop</button>
+<button onclick="showTool('rotate')">Rotate</button>
+<button onclick="showTool('removebg')">Remove BG</button>
+</div>
+
+<hr>
+
+<!-- Upload Area -->
+
+<div class="upload-area">
+<input type="file" id="imageInput">
+</div>
+
+<!-- Tool Workspaces -->
+
+<div id="compress" class="tool">
+<h2>Compress Image</h2>
+<label>Compression Level</label>
+<input type="range" min="10" max="100">
+<button>Compress</button>
+</div>
+
+<div id="resize" class="tool" style="display:none">
+<h2>Resize Image</h2>
+<input type="number" placeholder="Width">
+<input type="number" placeholder="Height">
+<button>Resize</button>
+</div>
+
+<div id="convert" class="tool" style="display:none">
+<h2>Convert Image</h2>
+<select>
+<option>JPG</option>
+<option>PNG</option>
+<option>WEBP</option>
+</select>
+<button>Convert</button>
+</div>
+
+<div id="crop" class="tool" style="display:none">
+<h2>Crop Image</h2>
+<button>Crop Center</button>
+</div>
+
+<div id="rotate" class="tool" style="display:none">
+<h2>Rotate Image</h2>
+<button>Rotate 90°</button>
+<button>Rotate 180°</button>
+</div>
+
+<div id="removebg" class="tool" style="display:none">
+<h2>Remove Background</h2>
+<button>Remove BG</button>
+</div>
+
+<hr>
+
+<!-- Preview -->
+
+<h3>Preview</h3>
+
+<div class="preview">
+<img id="previewImage" width="300">
+</div>
+
+<button id="downloadBtn">Download</button>
+
+<script>
+
+let input = document.getElementById("imageInput");
+let preview = document.getElementById("previewImage");
+
+input.addEventListener("change", function(){
+preview.src = URL.createObjectURL(input.files[0]);
+});
+
+function showTool(tool){
+let tools = document.querySelectorAll(".tool");
+tools.forEach(t => t.style.display="none");
+
+document.getElementById(tool).style.display="block";
+}
+
+</script>
+
+</body>
+</html>1
