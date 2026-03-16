@@ -60,6 +60,18 @@ margin-bottom:20px;
 text-align:center;
 }
 
+/* Upload Button */
+
+.upload-btn{
+display:inline-block;
+padding:10px 18px;
+background:var(--accent-color);
+color:#fff;
+border-radius:6px;
+cursor:pointer;
+margin-bottom:20px;
+}
+
 /* TOOL BUTTONS */
 
 .tools{
@@ -80,11 +92,11 @@ cursor:pointer;
 transition:all 0.2s ease;
 }
 
-/* BUTTON HOVER EFFECT */
+/* Button Hover */
 
 .tools button:hover{
-background:#0ea5e9;
 transform:scale(1.05);
+background:#0ea5e9;
 }
 
 /* CANVAS */
