@@ -25,7 +25,7 @@ body.light-mode {
 /* ===========================
    Base Styles
 =========================== */
-/* PAGE CENTER */
+
 body{
 margin:0;
 font-family:Arial, sans-serif;
@@ -39,10 +39,12 @@ align-items:center;
 min-height:100vh;
 }
 
-/* MAIN EDITOR CARD */
+/* ===========================
+   Image Studio Editor
+=========================== */
 
 .editor-box{
-background:#1e293b;
+background:var(--card-bg);
 padding:30px;
 border-radius:12px;
 width:90%;
@@ -50,7 +52,6 @@ max-width:1000px;
 box-shadow:0 10px 30px rgba(0,0,0,0.4);
 margin:20px;
 }
-/* HEADER */
 
 .editor-title{
 font-size:24px;
@@ -64,8 +65,8 @@ text-align:center;
 .tools{
 display:flex;
 flex-wrap:wrap;
-gap:10px;
-margin-bottom:20px;
+gap:12px;
+margin:25px 0;
 justify-content:center;
 }
 
@@ -73,9 +74,17 @@ justify-content:center;
 padding:10px 16px;
 border:none;
 border-radius:6px;
-background:#38bdf8;
+background:var(--accent-color);
 color:white;
 cursor:pointer;
+transition:all 0.2s ease;
+}
+
+/* BUTTON HOVER EFFECT */
+
+.tools button:hover{
+background:#0ea5e9;
+transform:scale(1.05);
 }
 
 /* CANVAS */
@@ -86,6 +95,7 @@ background:#111;
 border-radius:8px;
 display:block;
 margin:auto;
+border:2px solid #334155;
 }
 
 /* ACTION BUTTONS */
@@ -103,10 +113,18 @@ border-radius:6px;
 background:#22c55e;
 color:white;
 cursor:pointer;
+transition:all 0.2s ease;
 }
+
+.actions button:hover{
+transform:scale(1.05);
+opacity:0.9;
+}
+
 /* ===========================
    Header / Navbar
 =========================== */
+
 header {
     display: flex;
     justify-content: space-between;
@@ -137,12 +155,13 @@ header {
 .menu {
     font-size: 24px;
     cursor: pointer;
-    display: none; /* show later for mobile menu */
+    display: none;
 }
 
 /* ===========================
    Hero Section
 =========================== */
+
 .hero {
     text-align: center;
     padding: 80px 20px;
@@ -178,6 +197,7 @@ header {
 /* ===========================
    Cards Section
 =========================== */
+
 .cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -222,6 +242,7 @@ header {
 /* ===========================
    Footer
 =========================== */
+
 footer {
     text-align: center;
     padding: 40px 20px;
@@ -243,27 +264,45 @@ footer a:hover {
 /* ===========================
    Responsive
 =========================== */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        text-align: center;
-    }
-    .nav-links {
-        margin-top: 15px;
-    }
-    .hero h1 {
-        font-size: 2rem;
-    }
+
+@media (max-width:768px){
+
+.editor-box{
+padding:20px;
 }
 
-@media (max-width: 480px) {
-    .hero h1 {
-        font-size: 1.7rem;
-    }
-    .hero p {
-        font-size: 1rem;
-    }
-    .card h3 {
-        font-size: 1.3rem;
-    }
+.tools button{
+font-size:14px;
+padding:8px 12px;
+}
+
+header {
+flex-direction: column;
+text-align: center;
+}
+
+.nav-links {
+margin-top: 15px;
+}
+
+.hero h1 {
+font-size: 2rem;
+}
+
+}
+
+@media (max-width:480px){
+
+.hero h1 {
+font-size: 1.7rem;
+}
+
+.hero p {
+font-size: 1rem;
+}
+
+.card h3 {
+font-size: 1.3rem;
+}
+
 }
