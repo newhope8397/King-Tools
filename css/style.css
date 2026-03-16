@@ -25,19 +25,14 @@ body.light-mode {
 /* ===========================
    Base Styles
 =========================== */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
-}
 /* PAGE CENTER */
-
 body{
 margin:0;
-font-family:Arial;
-background:#0f172a;
+font-family:Arial, sans-serif;
+background:var(--bg-color);
+color:var(--text-color);
+line-height:1.6;
+
 display:flex;
 justify-content:center;
 align-items:center;
@@ -53,8 +48,8 @@ border-radius:12px;
 width:90%;
 max-width:1000px;
 box-shadow:0 10px 30px rgba(0,0,0,0.4);
+margin:20px;
 }
-
 /* HEADER */
 
 .editor-title{
