@@ -1,74 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KingTools - Smart Online Tools</title>
-<link rel="stylesheet" href="css/style.css">
+
+<title>King Tools - Free Online Tools</title>
+
+<link rel="icon" href="images/favicon.png">
+
+<style>
+
+/* COLORS */
+
+:root{
+--bg:#ffffff;
+--text:#111;
+--card:#f4f4f4;
+--accent:#2563eb;
+}
+
+body.dark{
+--bg:#0f172a;
+--text:#ffffff;
+--card:#1e293b;
+--accent:#38bdf8;
+}
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:var(--bg);
+color:var(--text);
+transition:0.3s;
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 30px;
+background:var(--card);
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* LOGO */
+
+.logo{
+display:flex;
+align-items:center;
+font-weight:bold;
+font-size:22px;
+}
+
+.logo-k{
+font-size:34px;
+font-weight:bold;
+position:relative;
+color:var(--accent);
+margin-right:2px;
+}
+
+.logo-k::before{
+content:"♛";
+position:absolute;
+top:-18px;
+left:4px;
+font-size:14px;
+color:gold;
+}
+
+.logo-text{
+letter-spacing:1px;
+}
+
+/* NAV */
+
+nav a{
+margin-left:20px;
+text-decoration:none;
+color:var(--text);
+font-weight:500;
+}
+
+nav a:hover{
+color:var(--accent);
+}
+
+.mode-btn{
+margin-left:20px;
+padding:6px 12px;
+border:none;
+border-radius:6px;
+background:var(--accent);
+color:white;
+cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:80px 20px;
+max-width:900px;
+margin:auto;
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:20px;
+opacity:0.8;
+margin-bottom:25px;
+}
+
+/* SEARCH BAR */
+
+.search-box{
+margin-top:20px;
+}
+
+.search-box input{
+padding:12px;
+width:260px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+/* HERO BUTTONS */
+
+.hero-buttons{
+margin-top:25px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.hero-btn{
+padding:12px 22px;
+background:var(--accent);
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-weight:600;
+transition:0.3s;
+}
+
+.hero-btn.secondary{
+background:transparent;
+border:2px solid var(--accent);
+color:var(--text);
+}
+
+.hero-btn:hover{
+transform:scale(1.05);
+}
+
+/* TRENDING */
+
+.trending{
+padding:20px 40px;
+font-weight:bold;
+}
+
+/* TOOLS GRID */
+
+.tools{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+padding:40px;
+}
+
+/* TOOL CARD */
+
+.tool-card{
+background:var(--card);
+padding:25px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.tool-card:hover{
+transform:translateY(-6px) scale(1.03);
+box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+
+.tool-card img{
+width:70px;
+margin-bottom:15px;
+}
+
+.tool-card h3{
+margin-bottom:10px;
+}
+
+.tool-card a{
+display:inline-block;
+margin-top:10px;
+padding:10px 18px;
+background:var(--accent);
+color:white;
+border-radius:6px;
+text-decoration:none;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+background:var(--card);
+margin-top:40px;
+}
+
+</style>
 </head>
+
 <body>
 
-<!-- Navbar -->
 <header>
-  <div class="logo">KingTools 👑</div>
-  <nav class="nav-links">
-    <a href="#tools">Tools</a>
-    <a href="#future">Coming Soon</a>
-  </nav>
-  <div class="menu">☰</div>
+
+<div class="logo">
+<div class="logo-k">K</div>
+<div class="logo-text">ing Tools</div>
+</div>
+
+<nav>
+
+<a href="#">Home</a>
+<a href="#tools">Tools</a>
+<a href="#">About</a>
+
+<button class="mode-btn" onclick="toggleMode()">Mode</button>
+
+</nav>
+
 </header>
 
-<!-- Hero Section -->
+<!-- HERO -->
+
 <section class="hero">
-  <h1>Powerful Tools for Everyone</h1>
-  <p>Fast, simple, and modern tools to improve productivity.</p>
-  <a href="#tools" class="btn">Explore Tools</a>
+
+<h1>Powerful Free Online Tools</h1>
+
+<p>Resize images • Generate passwords • Convert files • and much more</p>
+
+<div class="search-box">
+
+<input type="text" id="search" placeholder="Search tools...">
+
+</div>
+
+<div class="hero-buttons">
+
+<a href="#tools" class="hero-btn">Explore Tools</a>
+
+<a href="image-studio.html" class="hero-btn secondary">Image Studio</a>
+
+</div>
+
 </section>
 
-<!-- Tools Section -->
-<section id="tools">
-  <h2>Our Tools</h2>
-  <div class="cards">
-    <div class="card">
-      <img src="images/password-generator.png" alt="Password Generator">
-      <h3>Password Generator</h3>
-      <p>Create secure strong passwords instantly.</p>
-      <a href="tools/password-generator.html">Open Tool</a>
-    </div>
-    <div class="card">
-      <img src="images/image-studio.png" alt="Image Studio">
-      <h3>Image Studio</h3>
-      <p>Resize, compress and edit images easily.</p>
-      <a href="tools/image-studio.html">Open Tool</a>
-    </div>
-  </div>
+<!-- TRENDING -->
+
+<div class="trending">
+
+🔥 Trending Tools
+
+</div>
+
+<!-- TOOLS -->
+
+<section class="tools" id="tools">
+
+<div class="tool-card">
+
+<img src="images/password.png">
+
+<h3>Password Generator</h3>
+
+<a href="password.html">Open Tool</a>
+
+</div>
+
+<div class="tool-card">
+
+<img src="images/resize.png">
+
+<h3>Image Resizer</h3>
+
+<a href="image-studio.html">Open Tool</a>
+
+</div>
+
+<div class="tool-card">
+
+<img src="images/compress.png">
+
+<h3>Image Compressor</h3>
+
+<a href="#">Coming Soon</a>
+
+</div>
+
+<div class="tool-card">
+
+<img src="images/pdf.png">
+
+<h3>PDF Tools</h3>
+
+<a href="#">Coming Soon</a>
+
+</div>
+
 </section>
 
-<!-- Future Tools Section -->
-<section id="future">
-  <h2>Coming Soon</h2>
-  <div class="cards">
-    <div class="card">PDF Studio</div>
-    <div class="card">QR Generator</div>
-    <div class="card">Text Tools</div>
-    <div class="card">Color Tools</div>
-  </div>
-</section>
-
-<!-- Footer -->
 <footer>
-  <p>Connect with us:</p>
-  <a href="#"><img src="images/whatsapp.png" alt="WhatsApp" width="30"></a>
-  <a href="#"><img src="images/instagram.png" alt="Instagram" width="30"></a>
-  <a href="#"><img src="images/facebook.png" alt="Facebook" width="30"></a>
-  <p>© 2026 KingTools. All rights reserved.</p>
+
+<p>© 2026 King Tools • Free Online Tools</p>
+
 </footer>
 
 <script>
-// Optional: toggle light mode
-function toggleLightMode() {
-  document.body.classList.toggle('light-mode');
+
+/* DARK MODE */
+
+function toggleMode(){
+document.body.classList.toggle("dark")
 }
+
+/* AUTO DARK MODE */
+
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+document.body.classList.add("dark")
+}
+
+/* TOOL SEARCH */
+
+document.getElementById("search").addEventListener("keyup",function(){
+
+let filter=this.value.toLowerCase()
+
+let cards=document.querySelectorAll(".tool-card")
+
+cards.forEach(card=>{
+
+let text=card.innerText.toLowerCase()
+
+card.style.display=text.includes(filter)?"block":"none"
+
+})
+
+})
+
 </script>
 
 </body>
