@@ -1,249 +1,196 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Image Studio - King Tools</title>
-
 <style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#0f172a;
-color:white;
+/* ===========================
+   Base Colors & Theme
+=========================== */
+:root {
+  --bg-color: #0f172a;
+  --text-color: #fff;
+  --accent-color: #38bdf8;
+  --card-bg: #1e293b;
+  --card-hover: #334155;
 }
 
-/* HEADER */
-
-header{
-background:#1e293b;
-padding:15px 30px;
-font-size:22px;
-font-weight:bold;
+body.light-mode {
+  --bg-color: #f9f9f9;
+  --text-color: #1e1e2f;
+  --accent-color: #ffcc00;
+  --card-bg: #fff;
+  --card-hover: #f0f0f0;
 }
 
-/* MAIN LAYOUT */
-
-.container{
-display:flex;
-height:80vh;
+body {
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg-color);
+  color:var(--text-color);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
 }
 
-/* SIDEBAR */
-
-.sidebar{
-width:220px;
-background:#1e293b;
-padding:20px;
+/* ===========================
+   Editor Box
+=========================== */
+.editor-box {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  text-align: center;
+  margin: 20px auto;
 }
 
-.sidebar h3{
-margin-top:0;
+.editor-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-.sidebar button{
-width:100%;
-padding:10px;
-margin:8px 0;
-border:none;
-border-radius:6px;
-background:#38bdf8;
-color:white;
-cursor:pointer;
-font-size:14px;
+/* Upload Button */
+.upload-btn {
+  display:inline-block;
+  padding:10px 18px;
+  background:var(--accent-color);
+  color:#fff;
+  border-radius:6px;
+  cursor:pointer;
+  margin-bottom:15px;
 }
 
-.sidebar button:hover{
-background:#0ea5e9;
+/* Tools Buttons */
+.tools {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin: 20px 0;
 }
 
-/* EDITOR */
-
-.editor{
-flex:1;
-padding:30px;
-text-align:center;
+.tools button {
+  padding:10px 16px;
+  border:none;
+  border-radius:6px;
+  background:var(--accent-color);
+  color:white;
+  cursor:pointer;
+  transition:all 0.2s ease;
 }
 
-canvas{
-max-width:100%;
-background:#111;
-border-radius:10px;
+.tools button:hover {
+  transform: scale(1.05);
+  background:#0ea5e9;
 }
 
-/* UPLOAD */
-
-.upload{
-margin-bottom:20px;
+/* Canvas */
+canvas {
+  max-width:100%;
+  background:#111;
+  border-radius:10px;
+  margin-top:15px;
+  border:2px solid #334155;
 }
 
-/* DOWNLOAD BUTTON */
-
-.download{
-margin-top:20px;
-padding:12px 22px;
-background:#22c55e;
-border:none;
-border-radius:6px;
-color:white;
-cursor:pointer;
+/* Actions */
+.actions button {
+  padding:10px 18px;
+  margin:10px 5px;
+  border:none;
+  border-radius:6px;
+  background:#22c55e;
+  color:white;
+  cursor:pointer;
+  transition:all 0.2s ease;
 }
 
+.actions button:hover {
+  transform: scale(1.05);
+  opacity:0.9;
+}
+
+/* Crop Sliders */
+.sliders {
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.sliders label {
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.sliders input[type=range] {
+  width:150px;
+}
 </style>
-
 </head>
-
 <body>
 
-<header>
-Image Studio 👑
-</header>
+<div class="editor-box">
 
-<div class="container">
+<div class="editor-title">Image Studio 👑</div>
 
-<div class="sidebar">
+<label class="upload-btn" for="upload">Upload Image</label>
+<input type="file" id="upload" hidden>
 
-<h3>Tools</h3>
-
+<div class="tools">
 <button onclick="resizeImage()">🖼 Resize</button>
 <button onclick="cropImage()">✂ Crop</button>
 <button onclick="rotateImage()">🔄 Rotate</button>
 <button onclick="compressImage()">📦 Compress</button>
 <button onclick="convertImage()">🔁 Convert</button>
 <button onclick="addWatermark()">💧 Watermark</button>
-
 </div>
-
-<div class="editor">
-
-<div class="upload">
-
-<input type="file" id="upload">
-
+  
+<!-- Preset Crop Buttons -->
+<div class="preset-crops" style="margin-top:15px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+  <button onclick="setPresetCrop(1080,1080)">Instagram Post ♻️</button>
+  <button onclick="setPresetCrop(1080,1920)">Instagram Story 📱</button>
+  <button onclick="setPresetCrop(1280,720)">YouTube Thumbnail ▶️</button>
+  <button onclick="setPresetCrop(1200,630)">Facebook Link 🔗</button>
+</div>
+  
+<!-- Crop Sliders -->
+<div class="sliders">
+  <div>
+    <label for="cropWidth">Crop Width:</label>
+    <input type="range" id="cropWidth" min="50" max="1000" value="500">
+  </div>
+  <div>
+    <label for="cropHeight">Crop Height:</label>
+    <input type="range" id="cropHeight" min="50" max="1000" value="500">
+  </div>
 </div>
 
 <canvas id="canvas"></canvas>
 
-<br>
-
-<button class="download" onclick="download()">Download Image</button>
-
+<div class="actions">
+<button onclick="download()">Download</button>
+<button onclick="resetImage()">Reset</button>
 </div>
 
 </div>
 
 <script>
-
-let img = new Image()
-
-let canvas = document.getElementById("canvas")
-
-let ctx = canvas.getContext("2d")
-
-document.getElementById("upload").addEventListener("change",function(e){
-
-let file=e.target.files[0]
-
-let reader=new FileReader()
-
-reader.onload=function(event){
-
-img.src=event.target.result
-
-}
-
-reader.readAsDataURL(file)
-
-})
-
-img.onload=function(){
-
-canvas.width=img.width
-
-canvas.height=img.height
-
-ctx.drawImage(img,0,0)
-
-}
-
-function resizeImage(){
-
-canvas.width=img.width/2
-
-canvas.height=img.height/2
-
-ctx.drawImage(img,0,0,canvas.width,canvas.height)
-
-}
-
-function cropImage(){
-
-ctx.drawImage(img,50,50,canvas.width-100,canvas.height-100,0,0,canvas.width-100,canvas.height-100)
-
-}
-
-function rotateImage(){
-
-canvas.width=img.height
-
-canvas.height=img.width
-
-ctx.rotate(90*Math.PI/180)
-
-ctx.drawImage(img,0,-img.height)
-
-}
-
-function compressImage(){
-
-let data=canvas.toDataURL("image/jpeg",0.5)
-
-img.src=data
-
-}
-
-function convertImage(){
-
-let data=canvas.toDataURL("image/png")
-
-img.src=data
-
-}
-
-function addWatermark(){
-
-ctx.font="30px Arial"
-
-ctx.fillStyle="white"
-
-ctx.fillText("King Tools",20,40)
-
-}
-
-function download(){
-
-let link=document.createElement("a")
-
-link.download="image.png"
-
-link.href=canvas.toDataURL()
-
-link.click()
-
-}
-
-
-// ===== Image Studio JS =====
-
 let img = new Image();
 let originalImg = null;
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
+let rotation = 0;
 
-// Upload Image
+// ===== Upload Image =====
 document.getElementById("upload").addEventListener("change", function(e){
   const file = e.target.files[0];
   const reader = new FileReader();
@@ -253,44 +200,55 @@ document.getElementById("upload").addEventListener("change", function(e){
   reader.readAsDataURL(file);
 });
 
-// When image loads
 img.onload = function(){
   canvas.width = img.width;
   canvas.height = img.height;
   ctx.drawImage(img, 0, 0);
   originalImg = new Image();
-  originalImg.src = canvas.toDataURL(); // save original for reset
+  originalImg.src = canvas.toDataURL();
 }
 
 // ===== Resize =====
 function resizeImage(){
-  canvas.width = img.width / 2;
-  canvas.height = img.height / 2;
+  const scale = 0.5; // resize 50%
+  canvas.width = img.width * scale;
+  canvas.height = img.height * scale;
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
   img.src = canvas.toDataURL();
 }
+  
+// ===== Preset Crop Function =====
+function setPresetCrop(w, h){
+  const cropWidth = document.getElementById("cropWidth");
+  const cropHeight = document.getElementById("cropHeight");
 
-// ===== Crop =====
+  // Limit preset to current image dimensions
+  cropWidth.value = Math.min(w, canvas.width);
+  cropHeight.value = Math.min(h, canvas.height);
+
+  // Auto-crop to preset immediately
+  cropImage();
+  }
+  
+// ===== Crop with Sliders =====
 function cropImage(){
-  // Auto square crop (centered)
-  const size = Math.min(canvas.width, canvas.height);
-  const sx = (canvas.width - size) / 2;
-  const sy = (canvas.height - size) / 2;
-  const imageData = ctx.getImageData(sx, sy, size, size);
-  canvas.width = size;
-  canvas.height = size;
+  const cw = parseInt(document.getElementById("cropWidth").value);
+  const ch = parseInt(document.getElementById("cropHeight").value);
+  const sx = (canvas.width - cw)/2;
+  const sy = (canvas.height - ch)/2;
+  const imageData = ctx.getImageData(sx, sy, cw, ch);
+  canvas.width = cw;
+  canvas.height = ch;
   ctx.putImageData(imageData, 0, 0);
   img.src = canvas.toDataURL();
 }
 
 // ===== Rotate =====
-let rotation = 0;
 function rotateImage(){
   rotation += 90;
-  rotation = rotation % 360;
+  rotation %= 360;
   const offCanvas = document.createElement("canvas");
   const offCtx = offCanvas.getContext("2d");
-
   if(rotation % 180 === 0){
     offCanvas.width = img.width;
     offCanvas.height = img.height;
@@ -298,13 +256,11 @@ function rotateImage(){
     offCanvas.width = img.height;
     offCanvas.height = img.width;
   }
-
   offCtx.save();
   offCtx.translate(offCanvas.width/2, offCanvas.height/2);
   offCtx.rotate(rotation * Math.PI / 180);
   offCtx.drawImage(img, -img.width/2, -img.height/2);
   offCtx.restore();
-
   canvas.width = offCanvas.width;
   canvas.height = offCanvas.height;
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -316,7 +272,6 @@ function rotateImage(){
 function compressImage(){
   const data = canvas.toDataURL("image/jpeg",0.5);
   img.src = data;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
   const temp = new Image();
   temp.onload = ()=> ctx.drawImage(temp,0,0);
   temp.src = data;
@@ -326,7 +281,6 @@ function compressImage(){
 function convertImage(format="png"){
   const data = canvas.toDataURL("image/" + format);
   img.src = data;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
   const temp = new Image();
   temp.onload = ()=> ctx.drawImage(temp,0,0);
   temp.src = data;
@@ -348,7 +302,7 @@ function download(){
   link.click();
 }
 
-// ===== Reset Image =====
+// ===== Reset =====
 function resetImage(){
   if(originalImg){
     img.src = originalImg.src;
@@ -361,5 +315,6 @@ function resetImage(){
   }
 }
 </script>
+
 </body>
 </html>
