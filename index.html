@@ -363,6 +363,35 @@ card.style.display=text.includes(filter)?"block":"none"
 })
 
 </script>
+<div class="editor-box">
 
+<div class="editor-title">
+Image Studio 👑
+</div>
+
+<label for="upload" class="upload-btn">Upload Image</label>
+<input type="file" id="upload" hidden>
+
+<div class="tools">
+
+<button onclick="resizeImage()">Resize</button>
+<button onclick="cropImage()">Crop</button>
+<button onclick="rotateImage()">Rotate</button>
+<button onclick="compressImage()">Compress</button>
+<button onclick="convertImage()">Convert</button>
+<button onclick="addWatermark()">Watermark</button>
+
+</div>
+
+<canvas id="canvas"></canvas>
+
+<div class="actions">
+
+<button onclick="download()">Download</button>
+<button onclick="resetImage()">Reset</button>
+
+</div>
+
+</div>
 </body>
 </html>
