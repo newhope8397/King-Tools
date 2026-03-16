@@ -1,106 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Studio - KingTools</title>
-<link rel="stylesheet" href="../css/style.css">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Image Studio - King Tools</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#0f172a;
+color:white;
+text-align:center;
+}
+
+header{
+background:#1e293b;
+padding:20px;
+font-size:24px;
+font-weight:bold;
+}
+
+.container{
+padding:40px 20px;
+max-width:900px;
+margin:auto;
+}
+
+.tools button{
+margin:10px;
+padding:10px 18px;
+border:none;
+border-radius:6px;
+background:#38bdf8;
+color:white;
+cursor:pointer;
+}
+
+.tool{
+display:none;
+margin-top:20px;
+}
+
+.active{
+display:block;
+}
+
+canvas{
+margin-top:20px;
+max-width:100%;
+}
+
+.download{
+margin-top:20px;
+padding:10px 20px;
+background:#22c55e;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h1>Image Studio</h1>
+<header>
+Image Studio 👑
+</header>
 
-<!-- Tool Selector -->
+<div class="container">
 
-<div class="tool-menu">
-<button onclick="showTool('compress')">Compress</button>
+<input type="file" id="upload">
+
+<div class="tools">
+
 <button onclick="showTool('resize')">Resize</button>
+<button onclick="showTool('compress')">Compress</button>
 <button onclick="showTool('convert')">Convert</button>
-<button onclick="showTool('crop')">Crop</button>
-<button onclick="showTool('rotate')">Rotate</button>
-<button onclick="showTool('removebg')">Remove BG</button>
+
 </div>
 
-<hr>
+<div id="resize" class="tool active">
 
-<!-- Upload Area -->
+<h3>Resize Image</h3>
 
-<div class="upload-area">
-<input type="file" id="imageInput">
+<input type="number" id="width" placeholder="Width">
+<input type="number" id="height" placeholder="Height">
+
+<button onclick="resizeImage()">Apply</button>
+
 </div>
-
-<!-- Tool Workspaces -->
 
 <div id="compress" class="tool">
-<h2>Compress Image</h2>
-<label>Compression Level</label>
-<input type="range" min="10" max="100">
-<button>Compress</button>
+
+<h3>Compress Image</h3>
+
+<input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.7">
+
+<button onclick="compressImage()">Apply</button>
+
 </div>
 
-<div id="resize" class="tool" style="display:none">
-<h2>Resize Image</h2>
-<input type="number" placeholder="Width">
-<input type="number" placeholder="Height">
-<button>Resize</button>
-</div>
+<div id="convert" class="tool">
 
-<div id="convert" class="tool" style="display:none">
-<h2>Convert Image</h2>
-<select>
-<option>JPG</option>
-<option>PNG</option>
-<option>WEBP</option>
+<h3>Convert Image</h3>
+
+<select id="format">
+<option value="image/png">PNG</option>
+<option value="image/jpeg">JPG</option>
+<option value="image/webp">WEBP</option>
 </select>
-<button>Convert</button>
+
+<button onclick="convertImage()">Apply</button>
+
 </div>
 
-<div id="crop" class="tool" style="display:none">
-<h2>Crop Image</h2>
-<button>Crop Center</button>
+<canvas id="canvas"></canvas>
+
+<br>
+
+<button class="download" onclick="download()">Download Image</button>
+
 </div>
-
-<div id="rotate" class="tool" style="display:none">
-<h2>Rotate Image</h2>
-<button>Rotate 90°</button>
-<button>Rotate 180°</button>
-</div>
-
-<div id="removebg" class="tool" style="display:none">
-<h2>Remove Background</h2>
-<button>Remove BG</button>
-</div>
-
-<hr>
-
-<!-- Preview -->
-
-<h3>Preview</h3>
-
-<div class="preview">
-<img id="previewImage" width="300">
-</div>
-
-<button id="downloadBtn">Download</button>
 
 <script>
 
-let input = document.getElementById("imageInput");
-let preview = document.getElementById("previewImage");
+let img=new Image()
+let canvas=document.getElementById("canvas")
+let ctx=canvas.getContext("2d")
 
-input.addEventListener("change", function(){
-preview.src = URL.createObjectURL(input.files[0]);
-});
+document.getElementById("upload").addEventListener("change",function(e){
+
+let file=e.target.files[0]
+let reader=new FileReader()
+
+reader.onload=function(event){
+
+img.src=event.target.result
+
+}
+
+reader.readAsDataURL(file)
+
+})
+
+img.onload=function(){
+
+canvas.width=img.width
+canvas.height=img.height
+
+ctx.drawImage(img,0,0)
+
+}
 
 function showTool(tool){
-let tools = document.querySelectorAll(".tool");
-tools.forEach(t => t.style.display="none");
 
-document.getElementById(tool).style.display="block";
+document.querySelectorAll(".tool").forEach(t=>t.classList.remove("active"))
+
+document.getElementById(tool).classList.add("active")
+
+}
+
+function resizeImage(){
+
+let w=document.getElementById("width").value
+let h=document.getElementById("height").value
+
+canvas.width=w
+canvas.height=h
+
+ctx.drawImage(img,0,0,w,h)
+
+}
+
+function compressImage(){
+
+let quality=document.getElementById("quality").value
+
+let data=canvas.toDataURL("image/jpeg",quality)
+
+img.src=data
+
+}
+
+function convertImage(){
+
+let format=document.getElementById("format").value
+
+let data=canvas.toDataURL(format)
+
+img.src=data
+
+}
+
+function download(){
+
+let link=document.createElement("a")
+
+link.download="image"
+
+link.href=canvas.toDataURL()
+
+link.click()
+
 }
 
 </script>
 
 </body>
-</html>1
+</html>
