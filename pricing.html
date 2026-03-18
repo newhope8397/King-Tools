@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pricing - King Tools</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+<style>
+body{
+font-family:sans-serif;
+background:#0f172a;
+color:#fff;
+text-align:center;
+margin:0;
+}
+
+header{
+padding:20px;
+font-size:24px;
+font-weight:bold;
+}
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+padding:20px;
+}
+
+.plan{
+background:rgba(255,255,255,0.05);
+padding:20px;
+width:260px;
+border-radius:15px;
+}
+
+button{
+background:#7c3aed;
+border:none;
+padding:10px;
+color:white;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.free-btn{
+background:#22c55e;
+}
+
+.offer{
+background:#f59e0b;
+padding:5px;
+border-radius:6px;
+margin-bottom:10px;
+font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>👑 King Tools Pricing</header>
+
+<p id="user">Not logged in</p>
+<p id="uid"></p>
+
+<div class="container">
+
+<!-- FREE -->
+<div class="plan">
+<h2>🆓 Free</h2>
+<ul style="text-align:left">
+<li>✔ Basic tools</li>
+<li>✔ Ads supported</li>
+<li>✔ Beginner friendly</li>
+</ul>
+
+<button class="free-btn" onclick="goFree()">Continue Free</button>
+</div>
+
+<!-- PRO -->
+<div class="plan">
+<div class="offer">🎁 First 100 users: 30 Days FREE</div>
+
+<h2>💎 Pro ₹99/month</h2>
+
+<ul style="text-align:left">
+<li>✔ AI tools</li>
+<li>✔ No ads</li>
+<li>✔ Faster tools</li>
+<li>✔ Premium features</li>
+</ul>
+
+<button onclick="startTrial()">Start Free Trial</button>
+<button onclick="manualPay()">Pay & Activate</button>
+
+</div>
+
+</div>
+
+<script>
+// Firebase config
+const firebaseConfig = {
+apiKey:"YOUR_KEY",
+authDomain:"YOUR_DOMAIN",
+projectId:"YOUR_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+/* USER INFO */
+auth.onAuthStateChanged(user=>{
+if(user){
+document.getElementById("user").innerText = user.displayName;
+document.getElementById("uid").innerText = "UID: " + user.uid;
+}else{
+document.getElementById("user").innerText = "Not logged in";
+}
+});
+
+/* NAV */
+function goFree(){
+window.location.href="image-studio.html";
+}
+
+/* 🎁 TRIAL SYSTEM */
+function startTrial(){
+let user = auth.currentUser;
+if(!user) return alert("Login first");
+
+let expiry = new Date();
+expiry.setDate(expiry.getDate()+30);
+
+db.collection("users").doc(user.uid).set({
+pro:true,
+trial:true,
+expiry:expiry
+});
+
+alert("🎉 30 days Pro activated!");
+}
+
+/* 💰 MANUAL PAYMENT */
+function manualPay(){
+let user = auth.currentUser;
+if(!user) return alert("Login first");
+
+alert(
+"Pay ₹99 via UPI (coming soon)\n\nSend screenshot + UID to admin:\n" + user.uid
+);
+}
+</script>
+
+</body>
+</html>
