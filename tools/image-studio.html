@@ -3,316 +3,326 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Studio - King Tools</title>
+<title>Image Studio SaaS - King Tools</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
 <style>
-/* ===========================
-   Base Colors & Theme
-=========================== */
-:root {
-  --bg-color: #0f172a;
-  --text-color: #fff;
-  --accent-color: #38bdf8;
-  --card-bg: #1e293b;
-  --card-hover: #334155;
+:root{
+--bg:#0f172a;
+--card:rgba(255,255,255,0.05);
+--accent:#7c3aed;
+--text:#fff;
 }
 
-body.light-mode {
-  --bg-color: #f9f9f9;
-  --text-color: #1e1e2f;
-  --accent-color: #ffcc00;
-  --card-bg: #fff;
-  --card-hover: #f0f0f0;
+body{
+margin:0;
+font-family:sans-serif;
+background:var(--bg);
+color:var(--text);
 }
 
-body {
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:var(--bg-color);
-  color:var(--text-color);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
+/* Header */
+header{
+display:flex;
+justify-content:space-between;
+padding:15px;
+background:rgba(0,0,0,0.3);
 }
 
-/* ===========================
-   Editor Box
-=========================== */
-.editor-box {
-  background: var(--card-bg);
-  padding: 30px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 1000px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
-  text-align: center;
-  margin: 20px auto;
+button{
+background:var(--accent);
+border:none;
+padding:8px 12px;
+color:#fff;
+border-radius:8px;
+cursor:pointer;
+margin:3px;
 }
 
-.editor-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+/* Layout */
+.main{
+display:flex;
+flex-wrap:wrap;
 }
 
-/* Upload Button */
-.upload-btn {
-  display:inline-block;
-  padding:10px 18px;
-  background:var(--accent-color);
-  color:#fff;
-  border-radius:6px;
-  cursor:pointer;
-  margin-bottom:15px;
+.editor{
+flex:2;
+padding:20px;
 }
 
-/* Tools Buttons */
-.tools {
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  justify-content:center;
-  margin: 20px 0;
-}
-
-.tools button {
-  padding:10px 16px;
-  border:none;
-  border-radius:6px;
-  background:var(--accent-color);
-  color:white;
-  cursor:pointer;
-  transition:all 0.2s ease;
-}
-
-.tools button:hover {
-  transform: scale(1.05);
-  background:#0ea5e9;
+.panel{
+flex:1;
+background:var(--card);
+padding:15px;
 }
 
 /* Canvas */
-canvas {
-  max-width:100%;
-  background:#111;
-  border-radius:10px;
-  margin-top:15px;
-  border:2px solid #334155;
+.canvas-box{
+width:320px;
+height:320px;
+background:#000;
+margin:auto;
+position:relative;
+overflow:hidden;
+border-radius:10px;
 }
 
-/* Actions */
-.actions button {
-  padding:10px 18px;
-  margin:10px 5px;
-  border:none;
-  border-radius:6px;
-  background:#22c55e;
-  color:white;
-  cursor:pointer;
-  transition:all 0.2s ease;
+canvas{
+position:absolute;
+cursor:grab;
 }
 
-.actions button:hover {
-  transform: scale(1.05);
-  opacity:0.9;
-}
-
-/* Crop Sliders */
-.sliders {
-  margin-top:20px;
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  flex-wrap:wrap;
-}
-
-.sliders label {
-  display:block;
-  font-size:14px;
-  margin-bottom:5px;
-}
-
-.sliders input[type=range] {
-  width:150px;
+.crop{
+border:2px dashed #fff;
+position:absolute;
+display:none;
 }
 </style>
 </head>
+
 <body>
 
-<div class="editor-box">
-
-<div class="editor-title">Image Studio 👑</div>
-
-<label class="upload-btn" for="upload">Upload Image</label>
-<input type="file" id="upload" hidden>
-
-<div class="tools">
-<button onclick="resizeImage()">🖼 Resize</button>
-<button onclick="cropImage()">✂ Crop</button>
-<button onclick="rotateImage()">🔄 Rotate</button>
-<button onclick="compressImage()">📦 Compress</button>
-<button onclick="convertImage()">🔁 Convert</button>
-<button onclick="addWatermark()">💧 Watermark</button>
+<header>
+<div>👑 King Tools - Image Studio</div>
+<div>
+<button onclick="login()">Login</button>
+<button onclick="logout()">Logout</button>
+<span id="user">Guest</span>
 </div>
-  
-<!-- Preset Crop Buttons -->
-<div class="preset-crops" style="margin-top:15px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-  <button onclick="setPresetCrop(1080,1080)">Instagram Post ♻️</button>
-  <button onclick="setPresetCrop(1080,1920)">Instagram Story 📱</button>
-  <button onclick="setPresetCrop(1280,720)">YouTube Thumbnail ▶️</button>
-  <button onclick="setPresetCrop(1200,630)">Facebook Link 🔗</button>
-</div>
-  
-<!-- Crop Sliders -->
-<div class="sliders">
-  <div>
-    <label for="cropWidth">Crop Width:</label>
-    <input type="range" id="cropWidth" min="50" max="1000" value="500">
-  </div>
-  <div>
-    <label for="cropHeight">Crop Height:</label>
-    <input type="range" id="cropHeight" min="50" max="1000" value="500">
-  </div>
+</header>
+
+<div style="text-align:center;margin:10px;">
+<input type="file" id="upload">
 </div>
 
+<div class="main">
+
+<div class="editor">
+<div class="canvas-box" id="box">
 <canvas id="canvas"></canvas>
+<div id="cropBox" class="crop"></div>
+</div>
+</div>
 
-<div class="actions">
+<div class="panel">
+
+<h3>Tools</h3>
+
+<button onclick="rotate()">Rotate</button>
+<button onclick="startCrop()">Crop</button>
+<button onclick="applyCrop()">Apply Crop</button>
+
+<br>
+
+Zoom <input type="range" min="0.5" max="2" step="0.1" value="1" onchange="zoom(this.value)">
+
+<br>
+
+Brightness <input type="range" min="0" max="200" value="100" onchange="brightness=this.value;draw()">
+Contrast <input type="range" min="0" max="200" value="100" onchange="contrast=this.value;draw()">
+
+<br>
+
+Width <input type="number" id="w">
+Height <input type="number" id="h">
+<button onclick="resizeImg()">Resize</button>
+
+<hr>
+
+<h3>AI Tools</h3>
+<button onclick="aiEnhance()">Auto Enhance</button>
+<button onclick="aiCool()">Cool Filter</button>
+
+<hr>
+
+<h3>SaaS</h3>
+<button onclick="saveProject()">Save</button>
+<button onclick="loadProjects()">My Projects</button>
+
+<div id="gallery"></div>
+
+<hr>
+
 <button onclick="download()">Download</button>
-<button onclick="resetImage()">Reset</button>
+
 </div>
 
 </div>
 
 <script>
-let img = new Image();
-let originalImg = null;
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-let rotation = 0;
+// Firebase config (REPLACE)
+const firebaseConfig = {
+apiKey:"YOUR_KEY",
+authDomain:"YOUR_DOMAIN",
+projectId:"YOUR_ID"
+};
 
-// ===== Upload Image =====
-document.getElementById("upload").addEventListener("change", function(e){
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.onload = function(event){
-    img.src = event.target.result;
-  }
-  reader.readAsDataURL(file);
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+/* Auth */
+function login(){
+const provider = new firebase.auth.GoogleAuthProvider();
+auth.signInWithPopup(provider);
+}
+
+function logout(){
+auth.signOut();
+}
+
+auth.onAuthStateChanged(user=>{
+document.getElementById("user").innerText =
+user ? user.displayName : "Guest";
 });
 
-img.onload = function(){
-  canvas.width = img.width;
-  canvas.height = img.height;
-  ctx.drawImage(img, 0, 0);
-  originalImg = new Image();
-  originalImg.src = canvas.toDataURL();
+/* Canvas */
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+let img=new Image();
+let angle=0,scale=1,posX=0,posY=0;
+let brightness=100,contrast=100;
+
+upload.onchange=e=>{
+let r=new FileReader();
+r.onload=ev=>img.src=ev.target.result;
+r.readAsDataURL(e.target.files[0]);
+};
+
+img.onload=()=>{
+canvas.width=300;
+canvas.height=300;
+draw();
+};
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.save();
+ctx.filter=`brightness(${brightness}%) contrast(${contrast}%)`;
+
+ctx.translate(canvas.width/2+posX,canvas.height/2+posY);
+ctx.rotate(angle*Math.PI/180);
+ctx.scale(scale,scale);
+
+ctx.drawImage(img,-img.width/2,-img.height/2);
+
+ctx.restore();
 }
 
-// ===== Resize =====
-function resizeImage(){
-  const scale = 0.5; // resize 50%
-  canvas.width = img.width * scale;
-  canvas.height = img.height * scale;
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  img.src = canvas.toDataURL();
+function rotate(){angle+=90;draw();}
+function zoom(v){scale=v;draw();}
+
+/* Drag */
+let drag=false;
+canvas.onmousedown=()=>drag=true;
+canvas.onmouseup=()=>drag=false;
+canvas.onmousemove=e=>{
+if(drag){
+posX+=e.movementX;
+posY+=e.movementY;
+draw();
 }
-  
-// ===== Preset Crop Function =====
-function setPresetCrop(w, h){
-  const cropWidth = document.getElementById("cropWidth");
-  const cropHeight = document.getElementById("cropHeight");
+};
 
-  // Limit preset to current image dimensions
-  cropWidth.value = Math.min(w, canvas.width);
-  cropHeight.value = Math.min(h, canvas.height);
+/* Crop */
+let cropBox=document.getElementById("cropBox");
+let box=document.getElementById("box");
+let sx,sy;
 
-  // Auto-crop to preset immediately
-  cropImage();
-  }
-  
-// ===== Crop with Sliders =====
-function cropImage(){
-  const cw = parseInt(document.getElementById("cropWidth").value);
-  const ch = parseInt(document.getElementById("cropHeight").value);
-  const sx = (canvas.width - cw)/2;
-  const sy = (canvas.height - ch)/2;
-  const imageData = ctx.getImageData(sx, sy, cw, ch);
-  canvas.width = cw;
-  canvas.height = ch;
-  ctx.putImageData(imageData, 0, 0);
-  img.src = canvas.toDataURL();
+function startCrop(){
+cropBox.style.display="block";
 }
 
-// ===== Rotate =====
-function rotateImage(){
-  rotation += 90;
-  rotation %= 360;
-  const offCanvas = document.createElement("canvas");
-  const offCtx = offCanvas.getContext("2d");
-  if(rotation % 180 === 0){
-    offCanvas.width = img.width;
-    offCanvas.height = img.height;
-  } else {
-    offCanvas.width = img.height;
-    offCanvas.height = img.width;
-  }
-  offCtx.save();
-  offCtx.translate(offCanvas.width/2, offCanvas.height/2);
-  offCtx.rotate(rotation * Math.PI / 180);
-  offCtx.drawImage(img, -img.width/2, -img.height/2);
-  offCtx.restore();
-  canvas.width = offCanvas.width;
-  canvas.height = offCanvas.height;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.drawImage(offCanvas,0,0);
-  img.src = canvas.toDataURL();
+box.onmousedown=e=>{
+sx=e.offsetX;
+sy=e.offsetY;
+cropBox.style.left=sx+"px";
+cropBox.style.top=sy+"px";
+};
+
+box.onmousemove=e=>{
+if(cropBox.style.display==="block"){
+cropBox.style.width=(e.offsetX-sx)+"px";
+cropBox.style.height=(e.offsetY-sy)+"px";
+}
+};
+
+function applyCrop(){
+let x=parseInt(cropBox.style.left);
+let y=parseInt(cropBox.style.top);
+let w=parseInt(cropBox.style.width);
+let h=parseInt(cropBox.style.height);
+
+let data=ctx.getImageData(x,y,w,h);
+canvas.width=w;
+canvas.height=h;
+ctx.putImageData(data,0,0);
+
+cropBox.style.display="none";
 }
 
-// ===== Compress =====
-function compressImage(){
-  const data = canvas.toDataURL("image/jpeg",0.5);
-  img.src = data;
-  const temp = new Image();
-  temp.onload = ()=> ctx.drawImage(temp,0,0);
-  temp.src = data;
+/* Resize */
+function resizeImg(){
+canvas.width=w.value;
+canvas.height=h.value;
+draw();
 }
 
-// ===== Convert =====
-function convertImage(format="png"){
-  const data = canvas.toDataURL("image/" + format);
-  img.src = data;
-  const temp = new Image();
-  temp.onload = ()=> ctx.drawImage(temp,0,0);
-  temp.src = data;
+/* AI */
+function aiEnhance(){
+brightness=120;
+contrast=120;
+draw();
 }
 
-// ===== Watermark =====
-function addWatermark(text="♛ K ing Tools", x=10, y=30, size=30, color="rgba(255,255,255,0.7)"){
-  ctx.font = size + "px Arial";
-  ctx.fillStyle = color;
-  ctx.fillText(text, x, y);
-  img.src = canvas.toDataURL();
+function aiCool(){
+brightness=110;
+contrast=130;
+draw();
 }
 
-// ===== Download =====
+/* SaaS Save */
+function saveProject(){
+let user=auth.currentUser;
+if(!user)return alert("Login first");
+
+db.collection("projects").add({
+uid:user.uid,
+img:canvas.toDataURL()
+});
+
+alert("Saved!");
+}
+
+/* Load */
+function loadProjects(){
+let user=auth.currentUser;
+if(!user)return;
+
+db.collection("projects")
+.where("uid","==",user.uid)
+.get()
+.then(snap=>{
+let html="";
+snap.forEach(doc=>{
+html+=`<img src="${doc.data().img}" width="80">`;
+});
+gallery.innerHTML=html;
+});
+}
+
+/* Download */
 function download(){
-  const link = document.createElement("a");
-  link.download = "image.png";
-  link.href = canvas.toDataURL();
-  link.click();
-}
-
-// ===== Reset =====
-function resetImage(){
-  if(originalImg){
-    img.src = originalImg.src;
-    img.onload = function(){
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img,0,0);
-      rotation = 0;
-    }
-  }
+let a=document.createElement("a");
+a.download="image.png";
+a.href=canvas.toDataURL();
+a.click();
 }
 </script>
 
