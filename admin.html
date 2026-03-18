@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - King Tools</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+<style>
+body{
+margin:0;
+font-family:sans-serif;
+background:#0f172a;
+color:#fff;
+text-align:center;
+}
+
+header{
+padding:20px;
+font-size:22px;
+background:rgba(0,0,0,0.4);
+}
+
+.container{
+max-width:400px;
+margin:20px auto;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+input{
+width:80%;
+padding:10px;
+margin:10px;
+border-radius:8px;
+border:none;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+background:#7c3aed;
+color:white;
+cursor:pointer;
+margin:5px;
+}
+
+.status{
+margin-top:10px;
+font-size:14px;
+opacity:0.8;
+}
+</style>
+</head>
+
+<body>
+
+<header>👑 King Tools Admin Panel</header>
+
+<div class="container">
+
+<div class="card">
+<h3>🔐 Login</h3>
+<button onclick="login()">Login with Google</button>
+<p id="adminStatus">Not logged in</p>
+</div>
+
+<div class="card">
+<h3>⭐ Give / Remove Pro</h3>
+<input id="uidInput" placeholder="Enter User UID">
+<br>
+<button onclick="givePro()">Give Pro</button>
+<button onclick="removePro()">Remove Pro</button>
+</div>
+
+<div class="card">
+<h3>🔍 Check User</h3>
+<input id="checkUid" placeholder="Enter UID">
+<br>
+<button onclick="checkUser()">Check</button>
+<p id="result" class="status"></p>
+</div>
+
+</div>
+
+<script>
+// 🔧 Firebase Config
+const firebaseConfig = {
+apiKey:"YOUR_KEY",
+authDomain:"YOUR_DOMAIN",
+projectId:"YOUR_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// 🔐 YOUR ADMIN EMAIL
+const ADMIN_EMAIL = "knightking8435@gmail.com";
+
+/* LOGIN */
+function login(){
+const provider = new firebase.auth.GoogleAuthProvider();
+auth.signInWithPopup(provider);
+}
+
+/* AUTH CHECK */
+auth.onAuthStateChanged(user=>{
+if(!user){
+document.getElementById("adminStatus").innerText = "Not logged in";
+return;
+}
+
+if(user.email !== ADMIN_EMAIL){
+alert("Access Denied 🚫");
+auth.signOut();
+return;
+}
+
+document.getElementById("adminStatus").innerText =
+"Logged in as " + user.email;
+});
+
+/* GIVE PRO */
+function givePro(){
+const user = auth.currentUser;
+if(!user || user.email !== ADMIN_EMAIL){
+alert("Not authorized");
+return;
+}
+
+let uid = document.getElementById("uidInput").value;
+
+db.collection("users").doc(uid).set({
+pro:true
+},{merge:true});
+
+alert("✅ Pro Activated");
+}
+
+/* REMOVE PRO */
+function removePro(){
+const user = auth.currentUser;
+if(!user || user.email !== ADMIN_EMAIL){
+alert("Not authorized");
+return;
+}
+
+let uid = document.getElementById("uidInput").value;
+
+db.collection("users").doc(uid).update({
+pro:false
+});
+
+alert("❌ Pro Removed");
+}
+
+/* CHECK USER */
+async function checkUser(){
+const user = auth.currentUser;
+if(!user || user.email !== ADMIN_EMAIL){
+alert("Not authorized");
+return;
+}
+
+let uid = document.getElementById("checkUid").value;
+
+let doc = await db.collection("users").doc(uid).get();
+
+if(doc.exists){
+document.getElementById("result").innerText =
+JSON.stringify(doc.data(), null, 2);
+}else{
+document.getElementById("result").innerText = "User not found";
+}
+}
+</script>
+
+</body>
+</html>
