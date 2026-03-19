@@ -23,8 +23,12 @@ html{
 scroll-behavior:smooth;
 }
 
-*{
-box-sizing:border-box;
+/* PERFORMANCE OPTIMIZED TRANSITIONS */
+.card,
+button,
+input,
+.modal-box,
+.canvas-box {
 transition:
 background 0.2s ease,
 color 0.2s ease,
