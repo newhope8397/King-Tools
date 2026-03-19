@@ -1,56 +1,119 @@
+/* ===========================
+   ROOT VARIABLES
+=========================== */
+:root{
+--bg:#0f172a;
+--bg2:#020617;
+--card:#1e293b;
+--card-hover:#334155;
+--accent:#7c3aed;
+--text:#ffffff;
+--subtext:#94a3b8;
+}
+
+/* ===========================
+   BASE
+=========================== */
 body{
 margin:0;
 font-family:Poppins, sans-serif;
-background:#0f172a;
-color:#fff;
+background:var(--bg);
+color:var(--text);
 }
 
-/* NAV */
-.nav{
+/* ===========================
+   NAVBAR
+=========================== */
+nav{
 display:flex;
 justify-content:space-between;
-padding:15px;
-background:#020617;
+align-items:center;
+padding:15px 20px;
+background:var(--bg2);
 }
 
-/* HERO */
+.logo{
+font-size:20px;
+font-weight:bold;
+color:var(--accent);
+}
+
+nav button{
+background:var(--accent);
+border:none;
+padding:8px 12px;
+color:#fff;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* ===========================
+   HERO
+=========================== */
 .hero{
 text-align:center;
-padding:40px;
+padding:50px 20px;
+}
+
+.hero h1{
+font-size:2.5rem;
+margin-bottom:10px;
+}
+
+.hero p{
+color:var(--subtext);
 }
 
 .hero input{
 padding:10px;
 width:80%;
-max-width:300px;
-border-radius:8px;
+max-width:320px;
+border-radius:10px;
 border:none;
+outline:none;
+margin-top:15px;
 }
 
-/* GRID */
+/* ===========================
+   GRID
+=========================== */
 .tools-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:20px;
 padding:20px;
 }
 
-/* CARD */
+/* ===========================
+   CARD
+=========================== */
 .card{
-background:#1e293b;
+background:var(--card);
 padding:20px;
-border-radius:12px;
+border-radius:14px;
 text-align:center;
 cursor:pointer;
-transition:0.3s;
+transition:all 0.3s ease;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.card p{
+color:var(--subtext);
+font-size:14px;
 }
 
 .card:hover{
-transform:scale(1.05);
-background:#334155;
+transform:translateY(-6px) scale(1.03);
+background:var(--card-hover);
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* MODAL */
+/* ===========================
+   MODAL
+=========================== */
 .modal{
 display:none;
 position:fixed;
@@ -59,26 +122,102 @@ left:0;
 width:100%;
 height:100%;
 background:rgba(0,0,0,0.6);
+
 justify-content:center;
 align-items:center;
 }
 
 .modal-box{
 background:#111;
-padding:20px;
-border-radius:10px;
+padding:25px;
+border-radius:12px;
+width:90%;
+max-width:350px;
+text-align:center;
 }
 
-/* DASHBOARD */
+/* ===========================
+   DASHBOARD
+=========================== */
 .container{
 padding:20px;
 }
 
-#gallery img{
-width:80px;
-margin:5px;
-border-radius:6px;
+.card-box{
+background:var(--card);
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
 }
+
+/* ===========================
+   BUTTONS
+=========================== */
+button{
+background:var(--accent);
+border:none;
+padding:8px 12px;
+color:#fff;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+transition:0.2s;
+}
+
+button:hover{
+opacity:0.85;
+transform:scale(1.05);
+}
+
+/* ===========================
+   INPUTS
+=========================== */
+input, select{
+padding:8px;
+border-radius:8px;
+border:none;
+outline:none;
+margin:5px;
+}
+
+/* ===========================
+   IMAGE STUDIO
+=========================== */
+
+.main{
+display:flex;
+flex-wrap:wrap;
+}
+
+.editor{
+flex:2;
+padding:20px;
+}
+
+.panel{
+flex:1;
+background:var(--card);
+padding:15px;
+border-radius:10px;
+}
+
+/* CANVAS BOX */
+.canvas-box{
+width:320px;
+height:320px;
+background:#000;
+margin:auto;
+position:relative;
+overflow:hidden;
+border-radius:10px;
+}
+
+canvas{
+position:absolute;
+cursor:grab;
+}
+
+/* CROP TOOL */
 .crop{
 border:2px dashed #fff;
 position:absolute;
@@ -87,4 +226,34 @@ background:rgba(255,255,255,0.1);
 cursor:move;
 resize:both;
 overflow:auto;
+
+backdrop-filter: blur(2px);
+box-shadow:0 0 10px rgba(255,255,255,0.2);
+}
+
+/* GALLERY */
+#gallery img{
+width:80px;
+margin:5px;
+border-radius:6px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media(max-width:768px){
+
+.hero h1{
+font-size:1.8rem;
+}
+
+.main{
+flex-direction:column;
+}
+
+.canvas-box{
+width:100%;
+height:300px;
+}
+
 }
