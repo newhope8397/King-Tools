@@ -31,3 +31,21 @@ document.getElementById("premiumModal").style.display = "none";
 function closeLogin(){
 document.getElementById("loginModal").style.display = "none";
 }
+
+// Smooth page transition
+document.querySelectorAll("a").forEach(link=>{
+  link.addEventListener("click", e=>{
+    e.preventDefault();
+    const url = link.href;
+
+    document.body.style.opacity = "0";
+    document.body.style.transition = "0.3s";
+
+    setTimeout(()=>{
+      window.location.href = url;
+    },300);
+  });
+});
+window.onload = ()=>{
+  document.body.classList.add("loaded");
+};
