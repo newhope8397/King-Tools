@@ -126,6 +126,9 @@ box-shadow:
    BUTTONS (NEON)
 =========================== */
 button{
+position:relative;
+overflow:hidden;
+   
 background:transparent;
 border:1px solid var(--neon);
 padding:8px 14px;
