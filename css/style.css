@@ -1,3 +1,6 @@
+/* ===========================
+   PAGE LOAD ANIMATION
+=========================== */
 body{
 opacity:0;
 transition:opacity 0.4s ease;
@@ -6,6 +9,7 @@ transition:opacity 0.4s ease;
 body.loaded{
 opacity:1;
 }
+
 /* ===========================
    ROOT (NEON THEME)
 =========================== */
@@ -18,22 +22,36 @@ opacity:1;
 --text:#ffffff;
 --subtext:#94a3b8;
 }
-/* GLOBAL SETTINGS */
+
+/* ===========================
+   GLOBAL SETTINGS
+=========================== */
 html{
 scroll-behavior:smooth;
 }
 
-/* PERFORMANCE OPTIMIZED TRANSITIONS */
+*{
+box-sizing:border-box;
+}
+
+/* TRANSITIONS ONLY WHERE NEEDED */
 .card,
 button,
 input,
 .modal-box,
-.canvas-box {
+.canvas-box{
 transition:
 background 0.2s ease,
 color 0.2s ease,
 transform 0.2s ease,
 box-shadow 0.2s ease;
+}
+
+/* GPU BOOST */
+.card,
+button,
+.canvas-box{
+will-change: transform;
 }
 
 /* ===========================
@@ -44,10 +62,11 @@ margin:0;
 font-family:Poppins, sans-serif;
 background:radial-gradient(circle at top,#020617,#000);
 color:var(--text);
+overflow-x:hidden;
 }
 
 /* ===========================
-   NAVBAR (GLASS)
+   NAVBAR
 =========================== */
 nav{
 display:flex;
@@ -64,7 +83,7 @@ border-bottom:1px solid var(--glass-border);
 font-size:22px;
 font-weight:bold;
 color:var(--neon);
-text-shadow:0 0 10px var(--neon);
+text-shadow:0 0 8px var(--neon);
 }
 
 /* ===========================
@@ -77,7 +96,7 @@ padding:60px 20px;
 
 .hero h1{
 font-size:2.8rem;
-text-shadow:0 0 15px var(--neon);
+text-shadow:0 0 12px var(--neon);
 }
 
 .hero p{
@@ -108,7 +127,7 @@ padding:20px;
 }
 
 /* ===========================
-   CARD (GLASS + NEON)
+   CARD
 =========================== */
 .card{
 background:var(--glass);
@@ -119,8 +138,11 @@ cursor:pointer;
 
 backdrop-filter: blur(12px);
 border:1px solid var(--glass-border);
+}
 
-transition:all 0.3s ease;
+.card:hover{
+transform:translateY(-6px) scale(1.03);
+box-shadow:0 0 12px var(--neon);
 }
 
 .card h3{
@@ -132,15 +154,8 @@ color:var(--subtext);
 font-size:14px;
 }
 
-.card:hover{
-transform:translateY(-6px) scale(1.03);
-box-shadow:
-0 0 15px var(--neon),
-0 0 30px rgba(56,189,248,0.3);
-}
-
 /* ===========================
-   BUTTONS (NEON)
+   BUTTONS
 =========================== */
 button{
 position:relative;
@@ -153,17 +168,15 @@ color:var(--neon);
 border-radius:10px;
 cursor:pointer;
 margin:5px;
-
-transition:0.3s;
 }
 
 button:hover{
 background:var(--neon);
 color:#000;
-box-shadow:0 0 10px var(--neon), 0 0 25px var(--neon);
+box-shadow:0 0 10px var(--neon);
 }
 
-/* Ripple */
+/* Ripple Effect */
 button::after{
 content:"";
 position:absolute;
@@ -178,12 +191,12 @@ transition:0.4s;
 }
 
 button:active::after{
-width:200px;
-height:200px;
+width:180px;
+height:180px;
 }
 
 /* ===========================
-   MODAL (GLASS)
+   MODAL
 =========================== */
 .modal{
 display:none;
@@ -207,6 +220,8 @@ max-width:350px;
 
 backdrop-filter: blur(15px);
 border:1px solid var(--glass-border);
+
+animation:modalPop 0.3s ease;
 }
 
 /* ===========================
@@ -228,7 +243,6 @@ border:1px solid var(--glass-border);
 /* ===========================
    IMAGE STUDIO
 =========================== */
-
 .main{
 display:flex;
 flex-wrap:wrap;
@@ -249,7 +263,6 @@ backdrop-filter: blur(12px);
 border:1px solid var(--glass-border);
 }
 
-/* CANVAS */
 .canvas-box{
 width:320px;
 height:320px;
@@ -259,7 +272,7 @@ position:relative;
 overflow:hidden;
 border-radius:12px;
 
-box-shadow:0 0 20px rgba(0,0,0,0.5);
+box-shadow:0 0 15px rgba(0,0,0,0.5);
 }
 
 canvas{
@@ -267,7 +280,7 @@ position:absolute;
 cursor:grab;
 }
 
-/* CROP TOOL */
+/* Crop */
 .crop{
 border:2px dashed var(--neon);
 position:absolute;
@@ -278,20 +291,18 @@ cursor:move;
 resize:both;
 overflow:auto;
 
-box-shadow:0 0 10px var(--neon);
+box-shadow:0 0 8px var(--neon);
 }
 
-/* GALLERY */
+/* Gallery */
 #gallery img{
 width:80px;
 margin:5px;
 border-radius:8px;
-box-shadow:0 0 10px rgba(0,0,0,0.4);
+box-shadow:0 0 8px rgba(0,0,0,0.4);
 }
 
-/* ===========================
-   INPUTS
-=========================== */
+/* Inputs */
 input, select{
 padding:8px;
 border-radius:10px;
@@ -301,6 +312,46 @@ margin:5px;
 
 background:var(--glass);
 color:#fff;
+}
+
+/* ===========================
+   ANIMATIONS
+=========================== */
+.fade-in{
+animation:fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+.scale-in{
+animation:scaleIn 0.4s ease forwards;
+}
+
+@keyframes scaleIn{
+from{transform:scale(0.9); opacity:0;}
+to{transform:scale(1); opacity:1;}
+}
+
+.loader{
+border:4px solid rgba(255,255,255,0.1);
+border-top:4px solid var(--neon);
+border-radius:50%;
+width:40px;
+height:40px;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+@keyframes modalPop{
+from{transform:scale(0.8); opacity:0;}
+to{transform:scale(1); opacity:1;}
 }
 
 /* ===========================
@@ -321,112 +372,4 @@ width:100%;
 height:300px;
 }
 
-}
-/* ===========================
-   GLOBAL ANIMATIONS
-=========================== */
-
-/* Fade In */
-.fade-in{
-animation:fadeIn 0.8s ease forwards;
-}
-
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-/* Scale In */
-.scale-in{
-animation:scaleIn 0.4s ease forwards;
-}
-
-@keyframes scaleIn{
-from{transform:scale(0.9); opacity:0;}
-to{transform:scale(1); opacity:1;}
-}
-
-/* ===========================
-   BUTTON RIPPLE EFFECT
-=========================== */
-button{
-position:relative;
-overflow:hidden;
-}
-
-button::after{
-content:"";
-position:absolute;
-width:0;
-height:0;
-background:rgba(255,255,255,0.3);
-border-radius:50%;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-transition:0.4s;
-}
-
-button:active::after{
-width:200px;
-height:200px;
-}
-
-/* ===========================
-   LOADING SPINNER
-=========================== */
-.loader{
-border:4px solid rgba(255,255,255,0.1);
-border-top:4px solid var(--neon);
-border-radius:50%;
-width:40px;
-height:40px;
-animation:spin 1s linear infinite;
-margin:auto;
-}
-
-@keyframes spin{
-to{transform:rotate(360deg);}
-}
-
-/* ===========================
-   SHIMMER LOADING
-=========================== */
-.shimmer{
-background:linear-gradient(
-90deg,
-rgba(255,255,255,0.05) 25%,
-rgba(255,255,255,0.2) 50%,
-rgba(255,255,255,0.05) 75%
-);
-background-size:200% 100%;
-animation:shimmer 1.5s infinite;
-}
-
-@keyframes shimmer{
-0%{background-position:-200% 0;}
-100%{background-position:200% 0;}
-}
-
-/* ===========================
-   CARD HOVER UPGRADE
-=========================== */
-.card{
-transition:all 0.3s ease, transform 0.2s;
-}
-
-.card:hover{
-transform:translateY(-8px) scale(1.04);
-}
-
-/* ===========================
-   MODAL ANIMATION
-=========================== */
-.modal-box{
-animation:modalPop 0.3s ease;
-}
-
-@keyframes modalPop{
-from{transform:scale(0.8); opacity:0;}
-to{transform:scale(1); opacity:1;}
 }
