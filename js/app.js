@@ -1,51 +1,83 @@
+// ===========================
+// SAFE CANVAS INIT
+// ===========================
+let canvas = document.getElementById("canvas");
+let ctx = null;
+
+if(canvas){
+  ctx = canvas.getContext("2d", { willReadFrequently: true });
+}
+
+// ===========================
 // THEME
+// ===========================
 function toggleTheme(){
-document.body.classList.toggle("light");
+  document.body.classList.toggle("light");
 }
 
+// ===========================
 // SEARCH
+// ===========================
 function searchTools(){
-let input = document.getElementById("search").value.toLowerCase();
-let cards = document.querySelectorAll(".card");
+  let input = document.getElementById("search").value.toLowerCase();
+  let cards = document.querySelectorAll(".card");
 
-cards.forEach(card=>{
-let name = card.dataset.name;
-card.style.display = name.includes(input) ? "block" : "none";
-});
+  cards.forEach(card=>{
+    let name = card.dataset.name || "";
+    card.style.display = name.toLowerCase().includes(input) ? "block" : "none";
+  });
 }
 
+// ===========================
 // OPEN TOOL
+// ===========================
 function openTool(url){
-window.location.href = url;
+  window.location.href = url;
 }
 
-// LOGIN MODAL
+// ===========================
+// MODALS (SAFE)
+// ===========================
 function handlePremium(){
-document.getElementById("premiumModal").style.display = "flex";
+  let modal = document.getElementById("premiumModal");
+  if(modal) modal.style.display = "flex";
 }
 
 function closePremium(){
-document.getElementById("premiumModal").style.display = "none";
+  let modal = document.getElementById("premiumModal");
+  if(modal) modal.style.display = "none";
 }
 
 function closeLogin(){
-document.getElementById("loginModal").style.display = "none";
+  let modal = document.getElementById("loginModal");
+  if(modal) modal.style.display = "none";
 }
 
-// Smooth page transition
+// ===========================
+// SMOOTH PAGE TRANSITION (SAFE)
+// ===========================
 document.querySelectorAll("a").forEach(link=>{
+
+  // skip external / download links
+  if(link.target === "_blank" || link.hasAttribute("download")) return;
+
   link.addEventListener("click", e=>{
     e.preventDefault();
+
     const url = link.href;
 
     document.body.style.opacity = "0";
-    document.body.style.transition = "0.3s";
 
     setTimeout(()=>{
       window.location.href = url;
     },300);
   });
+
 });
-window.onload = ()=>{
+
+// ===========================
+// PAGE LOAD FADE IN
+// ===========================
+window.addEventListener("load", ()=>{
   document.body.classList.add("loaded");
-};
+});
