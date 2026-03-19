@@ -1,12 +1,20 @@
+body{
+opacity:0;
+transition:opacity 0.4s ease;
+}
+
+body.loaded{
+opacity:1;
+}
 /* ===========================
-   ROOT VARIABLES
+   ROOT (NEON THEME)
 =========================== */
 :root{
---bg:#0f172a;
---bg2:#020617;
---card:#1e293b;
---card-hover:#334155;
+--bg:#020617;
+--glass:rgba(255,255,255,0.05);
+--glass-border:rgba(255,255,255,0.1);
 --accent:#7c3aed;
+--neon:#38bdf8;
 --text:#ffffff;
 --subtext:#94a3b8;
 }
@@ -17,34 +25,29 @@
 body{
 margin:0;
 font-family:Poppins, sans-serif;
-background:var(--bg);
+background:radial-gradient(circle at top,#020617,#000);
 color:var(--text);
 }
 
 /* ===========================
-   NAVBAR
+   NAVBAR (GLASS)
 =========================== */
 nav{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:15px 20px;
-background:var(--bg2);
+
+background:var(--glass);
+backdrop-filter: blur(10px);
+border-bottom:1px solid var(--glass-border);
 }
 
 .logo{
-font-size:20px;
+font-size:22px;
 font-weight:bold;
-color:var(--accent);
-}
-
-nav button{
-background:var(--accent);
-border:none;
-padding:8px 12px;
-color:#fff;
-border-radius:8px;
-cursor:pointer;
+color:var(--neon);
+text-shadow:0 0 10px var(--neon);
 }
 
 /* ===========================
@@ -52,12 +55,12 @@ cursor:pointer;
 =========================== */
 .hero{
 text-align:center;
-padding:50px 20px;
+padding:60px 20px;
 }
 
 .hero h1{
-font-size:2.5rem;
-margin-bottom:10px;
+font-size:2.8rem;
+text-shadow:0 0 15px var(--neon);
 }
 
 .hero p{
@@ -65,13 +68,16 @@ color:var(--subtext);
 }
 
 .hero input{
-padding:10px;
+padding:12px;
 width:80%;
 max-width:320px;
-border-radius:10px;
+border-radius:12px;
 border:none;
 outline:none;
-margin-top:15px;
+
+background:var(--glass);
+color:#fff;
+backdrop-filter: blur(10px);
 }
 
 /* ===========================
@@ -85,14 +91,18 @@ padding:20px;
 }
 
 /* ===========================
-   CARD
+   CARD (GLASS + NEON)
 =========================== */
 .card{
-background:var(--card);
+background:var(--glass);
 padding:20px;
-border-radius:14px;
+border-radius:16px;
 text-align:center;
 cursor:pointer;
+
+backdrop-filter: blur(12px);
+border:1px solid var(--glass-border);
+
 transition:all 0.3s ease;
 }
 
@@ -107,12 +117,34 @@ font-size:14px;
 
 .card:hover{
 transform:translateY(-6px) scale(1.03);
-background:var(--card-hover);
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
+box-shadow:
+0 0 15px var(--neon),
+0 0 30px rgba(56,189,248,0.3);
 }
 
 /* ===========================
-   MODAL
+   BUTTONS (NEON)
+=========================== */
+button{
+background:transparent;
+border:1px solid var(--neon);
+padding:8px 14px;
+color:var(--neon);
+border-radius:10px;
+cursor:pointer;
+margin:5px;
+
+transition:0.3s;
+}
+
+button:hover{
+background:var(--neon);
+color:#000;
+box-shadow:0 0 10px var(--neon), 0 0 25px var(--neon);
+}
+
+/* ===========================
+   MODAL (GLASS)
 =========================== */
 .modal{
 display:none;
@@ -121,19 +153,21 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.6);
 
+background:rgba(0,0,0,0.7);
 justify-content:center;
 align-items:center;
 }
 
 .modal-box{
-background:#111;
+background:var(--glass);
 padding:25px;
-border-radius:12px;
+border-radius:16px;
 width:90%;
 max-width:350px;
-text-align:center;
+
+backdrop-filter: blur(15px);
+border:1px solid var(--glass-border);
 }
 
 /* ===========================
@@ -144,40 +178,12 @@ padding:20px;
 }
 
 .card-box{
-background:var(--card);
+background:var(--glass);
 padding:15px;
-border-radius:10px;
-margin-bottom:15px;
-}
+border-radius:12px;
 
-/* ===========================
-   BUTTONS
-=========================== */
-button{
-background:var(--accent);
-border:none;
-padding:8px 12px;
-color:#fff;
-border-radius:8px;
-cursor:pointer;
-margin:5px;
-transition:0.2s;
-}
-
-button:hover{
-opacity:0.85;
-transform:scale(1.05);
-}
-
-/* ===========================
-   INPUTS
-=========================== */
-input, select{
-padding:8px;
-border-radius:8px;
-border:none;
-outline:none;
-margin:5px;
+backdrop-filter: blur(10px);
+border:1px solid var(--glass-border);
 }
 
 /* ===========================
@@ -196,12 +202,15 @@ padding:20px;
 
 .panel{
 flex:1;
-background:var(--card);
+background:var(--glass);
 padding:15px;
-border-radius:10px;
+border-radius:12px;
+
+backdrop-filter: blur(12px);
+border:1px solid var(--glass-border);
 }
 
-/* CANVAS BOX */
+/* CANVAS */
 .canvas-box{
 width:320px;
 height:320px;
@@ -209,7 +218,9 @@ background:#000;
 margin:auto;
 position:relative;
 overflow:hidden;
-border-radius:10px;
+border-radius:12px;
+
+box-shadow:0 0 20px rgba(0,0,0,0.5);
 }
 
 canvas{
@@ -219,23 +230,38 @@ cursor:grab;
 
 /* CROP TOOL */
 .crop{
-border:2px dashed #fff;
+border:2px dashed var(--neon);
 position:absolute;
 display:none;
-background:rgba(255,255,255,0.1);
+background:rgba(56,189,248,0.1);
+
 cursor:move;
 resize:both;
 overflow:auto;
 
-backdrop-filter: blur(2px);
-box-shadow:0 0 10px rgba(255,255,255,0.2);
+box-shadow:0 0 10px var(--neon);
 }
 
 /* GALLERY */
 #gallery img{
 width:80px;
 margin:5px;
-border-radius:6px;
+border-radius:8px;
+box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+/* ===========================
+   INPUTS
+=========================== */
+input, select{
+padding:8px;
+border-radius:10px;
+border:none;
+outline:none;
+margin:5px;
+
+background:var(--glass);
+color:#fff;
 }
 
 /* ===========================
@@ -244,7 +270,7 @@ border-radius:6px;
 @media(max-width:768px){
 
 .hero h1{
-font-size:1.8rem;
+font-size:2rem;
 }
 
 .main{
@@ -255,5 +281,111 @@ flex-direction:column;
 width:100%;
 height:300px;
 }
+/* ===========================
+   GLOBAL ANIMATIONS
+=========================== */
 
+/* Fade In */
+.fade-in{
+animation:fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* Scale In */
+.scale-in{
+animation:scaleIn 0.4s ease forwards;
+}
+
+@keyframes scaleIn{
+from{transform:scale(0.9); opacity:0;}
+to{transform:scale(1); opacity:1;}
+}
+
+/* ===========================
+   BUTTON RIPPLE EFFECT
+=========================== */
+button{
+position:relative;
+overflow:hidden;
+}
+
+button::after{
+content:"";
+position:absolute;
+width:0;
+height:0;
+background:rgba(255,255,255,0.3);
+border-radius:50%;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+transition:0.4s;
+}
+
+button:active::after{
+width:200px;
+height:200px;
+}
+
+/* ===========================
+   LOADING SPINNER
+=========================== */
+.loader{
+border:4px solid rgba(255,255,255,0.1);
+border-top:4px solid var(--neon);
+border-radius:50%;
+width:40px;
+height:40px;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+/* ===========================
+   SHIMMER LOADING
+=========================== */
+.shimmer{
+background:linear-gradient(
+90deg,
+rgba(255,255,255,0.05) 25%,
+rgba(255,255,255,0.2) 50%,
+rgba(255,255,255,0.05) 75%
+);
+background-size:200% 100%;
+animation:shimmer 1.5s infinite;
+}
+
+@keyframes shimmer{
+0%{background-position:-200% 0;}
+100%{background-position:200% 0;}
+}
+
+/* ===========================
+   CARD HOVER UPGRADE
+=========================== */
+.card{
+transition:all 0.3s ease, transform 0.2s;
+}
+
+.card:hover{
+transform:translateY(-8px) scale(1.04);
+}
+
+/* ===========================
+   MODAL ANIMATION
+=========================== */
+.modal-box{
+animation:modalPop 0.3s ease;
+}
+
+@keyframes modalPop{
+from{transform:scale(0.8); opacity:0;}
+to{transform:scale(1); opacity:1;}
 }
