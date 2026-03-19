@@ -18,6 +18,19 @@ opacity:1;
 --text:#ffffff;
 --subtext:#94a3b8;
 }
+/* GLOBAL SETTINGS */
+html{
+scroll-behavior:smooth;
+}
+
+*{
+box-sizing:border-box;
+transition:
+background 0.2s ease,
+color 0.2s ease,
+transform 0.2s ease,
+box-shadow 0.2s ease;
+}
 
 /* ===========================
    BASE
