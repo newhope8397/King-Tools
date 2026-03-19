@@ -3,71 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - King Tools</title>
+<title>Dashboard</title>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<link rel="stylesheet" href="css/style.css">
 
-<style>
-body{
-margin:0;
-font-family:sans-serif;
-background:#0f172a;
-color:#fff;
-}
-
-header{
-padding:15px;
-background:rgba(0,0,0,0.4);
-display:flex;
-justify-content:space-between;
-}
-
-.container{
-padding:20px;
-}
-
-.card{
-background:rgba(255,255,255,0.05);
-padding:15px;
-border-radius:12px;
-margin-bottom:15px;
-}
-
-.status-pro{
-color:#22c55e;
-font-weight:bold;
-}
-
-.status-free{
-color:#f87171;
-font-weight:bold;
-}
-
-.gallery img{
-width:80px;
-margin:5px;
-border-radius:8px;
-}
-
-button{
-padding:8px 12px;
-border:none;
-border-radius:8px;
-background:#7c3aed;
-color:#fff;
-cursor:pointer;
-}
-</style>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
 
-<header>
-<div>👑 King Tools Dashboard</div>
-<button onclick="logout()">Logout</button>
+<header class="nav">
+  <div>👑 Dashboard</div>
+  <button onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
@@ -77,87 +26,16 @@ cursor:pointer;
 <p id="name"></p>
 <p id="email"></p>
 <p id="status"></p>
-<p id="expiry"></p>
 </div>
 
 <div class="card">
-<h3>My Projects</h3>
-<button onclick="loadProjects()">Load Projects</button>
-<div id="gallery" class="gallery"></div>
+<h3>Projects</h3>
+<button onclick="loadProjects()">Load</button>
+<div id="gallery"></div>
 </div>
 
 </div>
 
-<script>
-// Firebase config
-const firebaseConfig = {
-apiKey:"YOUR_KEY",
-authDomain:"YOUR_DOMAIN",
-projectId:"YOUR_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-/* AUTH */
-auth.onAuthStateChanged(async user=>{
-if(!user){
-window.location.href="index.html";
-return;
-}
-
-// Show basic info
-document.getElementById("name").innerText = "Name: " + user.displayName;
-document.getElementById("email").innerText = "Email: " + user.email;
-
-// Fetch user data
-const doc = await db.collection("users").doc(user.uid).get();
-
-if(doc.exists){
-const data = doc.data();
-
-if(data.pro){
-document.getElementById("status").innerHTML =
-"Status: <span class='status-pro'>PRO 💎</span>";
-
-if(data.trial){
-let expiry = data.expiry.toDate();
-document.getElementById("expiry").innerText =
-"Trial ends: " + expiry.toDateString();
-}
-}else{
-document.getElementById("status").innerHTML =
-"Status: <span class='status-free'>FREE</span>";
-}
-}else{
-document.getElementById("status").innerHTML =
-"Status: <span class='status-free'>FREE</span>";
-}
-});
-
-/* LOAD PROJECTS */
-function loadProjects(){
-const user = auth.currentUser;
-
-db.collection("projects")
-.where("uid","==",user.uid)
-.get()
-.then(snapshot=>{
-let html="";
-snapshot.forEach(doc=>{
-html += `<img src="${doc.data().img}">`;
-});
-document.getElementById("gallery").innerHTML = html;
-});
-}
-
-/* LOGOUT */
-function logout(){
-auth.signOut();
-}
-</script>
-
+<script src="js/dashboard.js"></script>
 </body>
 </html>
