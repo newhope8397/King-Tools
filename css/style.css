@@ -79,3 +79,12 @@ width:80px;
 margin:5px;
 border-radius:6px;
 }
+.crop{
+border:2px dashed #fff;
+position:absolute;
+display:none;
+background:rgba(255,255,255,0.1);
+cursor:move;
+resize:both;
+overflow:auto;
+}
