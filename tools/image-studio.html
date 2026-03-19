@@ -122,8 +122,8 @@ Zoom <input type="range" min="0.5" max="2" step="0.1" value="1" onchange="zoom(t
 
 <br>
 
-Brightness <input type="range" min="0" max="200" value="100" onchange="brightness=this.value;draw()">
-Contrast <input type="range" min="0" max="200" value="100" onchange="contrast=this.value;draw()">
+Brightness <input type="range" min="0" max="200" value="100" oninput="setBrightness(this.value)">
+Contrast <input type="range" min="0" max="200" value="100"   oninput="setContrast(this.value)">
 
 <br>
 
