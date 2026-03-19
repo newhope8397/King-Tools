@@ -4,151 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>King Tools — Ultimate Online Toolkit</title>
+<title>King Tools — Online Toolkit</title>
 
-<!-- SEO -->
-<meta name="description" content="Free online tools like image compressor, PDF tools, password generator and more at King Tools. Fast & secure.">
-<meta name="keywords" content="image compressor, pdf tools, password generator, free tools online">
+<meta name="description" content="Free online tools for images, passwords, PDFs and more. Fast & secure.">
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 
-<!-- AdSense (Replace YOUR-ID) -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR-ID"
-crossorigin="anonymous"></script>
+<!-- Firebase -->
+<script type="module" src="js/auth.js"></script>
 
-<style>
-:root {
-  --bg: #0f172a;
-  --card: rgba(255,255,255,0.05);
-  --text: #e2e8f0;
-  --primary: #7c3aed;
-  --secondary: #06b6d4;
-}
-
-.light {
-  --bg: #f8fafc;
-  --card: rgba(0,0,0,0.05);
-  --text: #0f172a;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  transition: 0.3s;
-}
-
-/* NAV */
-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 40px;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-nav button {
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 18px;
-  cursor: pointer;
-}
-
-/* HERO */
-.hero {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-.hero h1 {
-  font-size: 42px;
-}
-
-.hero span {
-  background: linear-gradient(45deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-/* SEARCH */
-.search-box {
-  margin-top: 25px;
-}
-
-.search-box input {
-  padding: 12px;
-  width: 280px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-}
-
-/* CATEGORY */
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px;
-  flex-wrap: wrap;
-}
-
-.cat {
-  padding: 8px 15px;
-  background: var(--card);
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-/* GRID */
-.tools {
-  padding: 30px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: var(--card);
-  backdrop-filter: blur(12px);
-  padding: 25px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-.card h3 {
-  margin-bottom: 10px;
-}
-
-/* ADS */
-.ad-box {
-  text-align: center;
-  margin: 20px;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 20px;
-  opacity: 0.7;
-}
-</style>
 </head>
 
 <body>
@@ -161,14 +26,27 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
-  <h1>Ultimate <span>Online Toolkit</span></h1>
+  <h1>All Tools. One Place.</h1>
+  <p>Fast, simple and powerful online utilities</p>
 
   <div class="search-box">
     <input type="text" id="search" placeholder="Search tools..." onkeyup="searchTools()">
   </div>
 </section>
 
-<!-- 🔥 AD (TOP MONEY ZONE) -->
+<!-- DASHBOARD -->
+<section class="dashboard">
+  <div class="stat">
+    <h2 id="visits">0</h2>
+    <p>Visits</p>
+  </div>
+  <div class="stat">
+    <h2 id="usedTools">0</h2>
+    <p>Tools Used</p>
+  </div>
+</section>
+
+<!-- AD -->
 <div class="ad-box">
   <ins class="adsbygoogle"
        style="display:block"
@@ -177,25 +55,27 @@ footer {
        data-ad-format="auto"></ins>
 </div>
 
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-<!-- 🔥 TRENDING -->
+<!-- TRENDING -->
 <h2 style="text-align:center;">🔥 Trending Tools</h2>
 
 <div class="tools">
-  <div class="card"><h3>🖼 Image Compressor</h3></div>
-  <div class="card"><h3>🔐 Password Generator</h3></div>
+  <div class="card" onclick="openTool('tools/image-studio.html')">
+    <h3>🖼 Image Studio</h3>
+  </div>
+
+  <div class="card" onclick="openTool('tools/password-generator.html')">
+    <h3>🔐 Password Generator</h3>
+  </div>
 </div>
 
-<!-- CATEGORY -->
+<!-- CATEGORIES -->
 <div class="categories">
   <div class="cat" onclick="filterTools('all')">All</div>
   <div class="cat" onclick="filterTools('image')">Image</div>
   <div class="cat" onclick="filterTools('security')">Security</div>
   <div class="cat" onclick="filterTools('pdf')">PDF</div>
   <div class="cat" onclick="filterTools('dev')">Dev</div>
+  <div class="cat" onclick="filterTools('ai')">AI</div>
 </div>
 
 <!-- TOOLS -->
@@ -204,7 +84,7 @@ footer {
   <!-- IMAGE -->
   <div class="card" data-cat="image" onclick="openTool('tools/image-studio.html')">
     <h3>🖼 Image Studio</h3>
-    <p>Edit, resize, rotate</p>
+    <p>Edit and enhance images</p>
   </div>
 
   <div class="card" data-cat="image">
@@ -212,84 +92,59 @@ footer {
     <p>Reduce size instantly</p>
   </div>
 
-  <div class="card" data-cat="image">
-    <h3>✂️ Image Crop Tool</h3>
-    <p>Crop images easily</p>
-  </div>
-
   <!-- SECURITY -->
   <div class="card" data-cat="security" onclick="openTool('tools/password-generator.html')">
     <h3>🔐 Password Generator</h3>
-    <p>Generate strong passwords</p>
+    <p>Create strong passwords</p>
   </div>
 
-  <div class="card" data-cat="security">
-    <h3>🔑 Strength Checker</h3>
-    <p>Check password safety</p>
-  </div>
-
-  <!-- PDF -->
-  <div class="card" data-cat="pdf">
-    <h3>📄 PDF Merger</h3>
-    <p>Coming soon</p>
-  </div>
-
-  <div class="card" data-cat="pdf">
-    <h3>📄 PDF to JPG</h3>
-    <p>Convert PDF</p>
-  </div>
-
-  <!-- DEV -->
-  <div class="card" data-cat="dev">
-    <h3>🧠 JSON Formatter</h3>
-    <p>Format JSON data</p>
-  </div>
-
-  <div class="card" data-cat="dev">
-    <h3>🎨 Color Picker</h3>
-    <p>Pick colors instantly</p>
+  <!-- AI (PREMIUM) -->
+  <div class="card premium" data-cat="ai" onclick="handlePremium('ai-writer')">
+    <h3>✍️ AI Text Generator</h3>
+    <p>Generate content with AI</p>
   </div>
 
 </section>
 
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal">
+  <div class="modal-box">
+    <h2>Login</h2>
+    <p style="font-size:13px; opacity:0.7;">Save your activity & access more features</p>
+
+    <button onclick="googleLogin()">Continue with Google</button>
+
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="emailLogin()">Login</button>
+    <button onclick="closeLogin()">Close</button>
+  </div>
+</div>
+
+<!-- PRO MODAL -->
+<div id="premiumModal" class="modal">
+  <div class="modal-box">
+    <h2>Upgrade to Pro</h2>
+    <p>Unlock AI tools & premium features</p>
+
+    <button onclick="buyPro()">Upgrade</button>
+    <button onclick="closePremium()">Close</button>
+  </div>
+</div>
+
 <footer>
-  🚀 King Tools — Money Machine Mode Activated
+  <p>© King Tools — Fast & Simple Online Tools</p>
 </footer>
 
+<!-- SCRIPTS -->
+<script src="js/app.js"></script>
+<script src="js/pro.js"></script>
+<script src="js/ai.js"></script>
+
 <script>
-function openTool(path) {
-  window.location.href = path;
-}
-
-/* SEARCH */
-function searchTools() {
-  let input = document.getElementById("search").value.toLowerCase();
-  let cards = document.querySelectorAll("#tools .card");
-
-  cards.forEach(card => {
-    let text = card.innerText.toLowerCase();
-    card.style.display = text.includes(input) ? "block" : "none";
-  });
-}
-
-/* FILTER */
-function filterTools(category) {
-  let cards = document.querySelectorAll("#tools .card");
-
-  cards.forEach(card => {
-    if (category === "all" || card.dataset.cat === category) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
-  });
-}
-
-/* THEME */
-function toggleTheme() {
-  document.body.classList.toggle("light");
-}
+(adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
 </body>
-</html>>
+</html>
