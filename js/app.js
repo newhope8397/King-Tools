@@ -81,3 +81,10 @@ document.querySelectorAll("a").forEach(link=>{
 window.addEventListener("load", ()=>{
   document.body.classList.add("loaded");
 });
+function handlePremium(){
+  document.getElementById("premiumModal").style.display = "flex";
+}
+
+function buyPro(){
+  alert("Payment system coming soon 💰");
+}
