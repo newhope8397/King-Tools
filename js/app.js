@@ -81,6 +81,10 @@ document.querySelectorAll("a").forEach(link=>{
 window.addEventListener("load", ()=>{
   document.body.classList.add("loaded");
 });
+// ======================
+// PREMIUM / PRO FEATURES
+// ======================
+
 function handlePremium(){
   document.getElementById("premiumModal").style.display = "flex";
 }
