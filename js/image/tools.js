@@ -63,8 +63,10 @@ function rotate(){
 
 // ZOOM
 function zoom(scale){
-    ctx.setTransform(scale, 0, 0, scale, 0, 0);
-    ctx.drawImage(app.currentImage, 0, 0);
+    if(!app.currentImage) return;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(app.currentImage, 0, 0, canvas.width * scale, canvas.height * scale);
 }
 
 // RESIZE
