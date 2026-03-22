@@ -13,8 +13,8 @@ function cropMouseDown(e){
 }
 
 function cropMouseUp(e){
-    let endX = e.offsetX;
-    let endY = e.offsetY;
+    let width = endX - cropstart.X;
+    let height = endY - cropsrart.Y;
 
     if(width < 0){
     cropStart.x += width;
