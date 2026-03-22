@@ -21,12 +21,25 @@ function loadImage(file){
     img.src = URL.createObjectURL(file);
 
     img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
+
+        const box = document.getElementById("box");
+
+        let maxW = box.clientWidth;
+        let maxH = box.clientHeight;
+
+        let ratio = Math.min(maxW / img.width, maxH / img.height);
+
+        let newW = img.width * ratio;
+        let newH = img.height * ratio;
+
+        canvas.width = newW;
+        canvas.height = newH;
+
+        ctx.drawImage(img, 0, 0, newW, newH);
+
         app.currentImage = img;
 
-        if(window.saveState) saveState();
+        saveState();
     };
 }
 
