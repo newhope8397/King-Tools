@@ -28,3 +28,9 @@ function cropMouseUp(e){
 
     saveState();
 }
+function applyCrop(){
+    // already handled in mouseUp
+    // so just remove listeners
+    canvas.removeEventListener("mousedown", cropMouseDown);
+    canvas.removeEventListener("mouseup", cropMouseUp);
+}
