@@ -6,9 +6,9 @@ function applyBrightness(value){
     let data = imageData.data;
 
     for(let i=0;i<data.length;i+=4){
-        data[i] += value;
-        data[i+1] += value;
-        data[i+2] += value;
+        data[i] = Math.min(255, Math.max(0, data[i] + value));
+        data[i+1] = Math.min(255, Math.max(0, data[i+1] + value));
+        data[i+2] = Math.min(255, Math.max(0, data[i+2] + value));
     }
 
     ctx.putImageData(imageData,0,0);
@@ -20,19 +20,7 @@ function applyBrightness(value){
 // ==========================
 
 // BRIGHTNESS SLIDER
-function applyBrightness(value){
-    let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
-    let data = imageData.data;
 
-    for(let i=0;i<data.length;i+=4){
-        data[i] = Math.min(255, Math.max(0, data[i] + value));
-        data[i+1] = Math.min(255, Math.max(0, data[i+1] + value));
-        data[i+2] = Math.min(255, Math.max(0, data[i+2] + value));
-    }
-
-    ctx.putImageData(imageData,0,0);
-    saveState();
-}
 
 // CONTRAST
 function setContrast(val){
@@ -81,8 +69,8 @@ function zoom(scale){
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    let w = canvas.width * zoomLevel;
-    let h = canvas.height * zoomLevel;
+    let w = app.currentImage.width * zoomLevel;
+    let h = app.currentImage.height * zoomLevel;
 
     let x = (canvas.width - w) / 2;
     let y = (canvas.height - h) / 2;
