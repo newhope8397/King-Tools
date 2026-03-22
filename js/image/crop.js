@@ -16,8 +16,15 @@ function cropMouseUp(e){
     let endX = e.offsetX;
     let endY = e.offsetY;
 
-    let width = endX - cropStart.x;
-    let height = endY - cropStart.y;
+    if(width < 0){
+    cropStart.x += width;
+    width = Math.abs(width);
+}
+
+if(height < 0){
+    cropStart.y += height;
+    height = Math.abs(height);
+}
 
     let imageData = ctx.getImageData(cropStart.x, cropStart.y, width, height);
 
