@@ -123,10 +123,20 @@ app.currentImage.src = canvas.toDataURL();
 
 // AI (BASIC PLACEHOLDER)
 function aiEnhance(){
+    if(!app.originalImage) return;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(app.originalImage, 0, 0, canvas.width, canvas.height);
+
     applyBrightness(20);
 }
 
 function aiCool(){
+    if(!app.originalImage) return;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(app.originalImage, 0, 0, canvas.width, canvas.height);
+
     applyBrightness(-20);
 }
 
