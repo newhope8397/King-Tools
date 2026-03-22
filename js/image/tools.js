@@ -12,7 +12,6 @@ function applyBrightness(value){
     }
 
     ctx.putImageData(imageData,0,0);
-    saveState();
 }
 
 // ==========================
@@ -20,10 +19,23 @@ function applyBrightness(value){
 // ==========================
 
 // BRIGHTNESS SLIDER
+function setBrightness(val){
+    if(!app.originalImage) return;
 
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    ctx.drawImage(app.originalImage, 0, 0, canvas.width, canvas.height);
+
+    applyBrightness(val - 100);
+}
 
 // CONTRAST
-function setContrast(val){
+    function setContrast(val){
+    if(!app.originalImage) return;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(app.originalImage, 0, 0, canvas.width, canvas.height);
+
     let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
     let data = imageData.data;
 
@@ -36,8 +48,7 @@ function setContrast(val){
     }
 
     ctx.putImageData(imageData,0,0);
-    saveState();
-}
+    }
 
 // ROTATE
 function rotate(){
@@ -57,6 +68,13 @@ function rotate(){
 
     ctx.drawImage(tempCanvas, 0, 0);
     saveState();
+    let imgData = canvas.toDataURL();
+
+app.originalImage = new Image();
+app.currentImage = new Image();
+
+app.originalImage.src = imgData;
+app.currentImage.src = imgData;
 }
 
 // ZOOM
@@ -96,6 +114,11 @@ function resizeImg(){
 
     ctx.drawImage(temp,0,0);
     saveState();
+    app.originalImage = new Image();
+app.originalImage.src = canvas.toDataURL();
+
+app.currentImage = new Image();
+app.currentImage.src = canvas.toDataURL();
 }
 
 // AI (BASIC PLACEHOLDER)
