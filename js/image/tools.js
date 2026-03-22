@@ -20,8 +20,18 @@ function applyBrightness(value){
 // ==========================
 
 // BRIGHTNESS SLIDER
-function setBrightness(val){
-    applyBrightness(val - 100);
+function applyBrightness(value){
+    let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    let data = imageData.data;
+
+    for(let i=0;i<data.length;i+=4){
+        data[i] = Math.min(255, Math.max(0, data[i] + value));
+        data[i+1] = Math.min(255, Math.max(0, data[i+1] + value));
+        data[i+2] = Math.min(255, Math.max(0, data[i+2] + value));
+    }
+
+    ctx.putImageData(imageData,0,0);
+    saveState();
 }
 
 // CONTRAST
@@ -32,9 +42,9 @@ function setContrast(val){
     let factor = (259 * (val + 255)) / (255 * (259 - val));
 
     for(let i=0;i<data.length;i+=4){
-        data[i] = factor * (data[i]-128) + 128;
-        data[i+1] = factor * (data[i+1]-128) + 128;
-        data[i+2] = factor * (data[i+2]-128) + 128;
+        data[i] = Math.min(255, Math.max(0, factor * (data[i]-128) + 128));
+        data[i+1] = Math.min(255, Math.max(0, factor * (data[i+1]-128) + 128));
+        data[i+2] = Math.min(255, Math.max(0, factor * (data[i+2]-128) + 128));
     }
 
     ctx.putImageData(imageData,0,0);
@@ -62,11 +72,22 @@ function rotate(){
 }
 
 // ZOOM
+let zoomLevel = 1;
+
 function zoom(scale){
     if(!app.currentImage) return;
 
+    zoomLevel = scale;
+
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(app.currentImage, 0, 0, canvas.width * scale, canvas.height * scale);
+
+    let w = canvas.width * zoomLevel;
+    let h = canvas.height * zoomLevel;
+
+    let x = (canvas.width - w) / 2;
+    let y = (canvas.height - h) / 2;
+
+    ctx.drawImage(app.currentImage, x, y, w, h);
 }
 
 // RESIZE
