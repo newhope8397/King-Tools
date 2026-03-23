@@ -43,11 +43,12 @@ function loadImage(file){
 window.app = {
     canvas,
     ctx,
+    originalImage: null,
     currentImage: null,
-    isDragging: false,
-    startX: 0,
-    startY: 0,
-    elements: []
+    scale: 1, 
+    zoom: 1,
+    brightness: 100,
+    contrast: 100
 };
 
 // LOAD IMAGE
@@ -56,26 +57,44 @@ function loadImage(file){
     img.src = URL.createObjectURL(file);
 
     img.onload = () => {
-
         const box = document.getElementById("box");
 
-        let maxW = box.clientWidth;
-        let maxH = box.clientHeight;
+        let ratio = Math.min(
+            box.clientWidth / img.width,
+            box.clientHeight / img.height
+        );
 
-        let ratio = Math.min(maxW / img.width, maxH / img.height);
+        canvas.width = img.width * ratio;
+        canvas.height = img.height * ratio;
 
-        let newW = img.width * ratio;
-        let newH = img.height * ratio;
-
-        canvas.width = newW;
-        canvas.height = newH;
-
-        ctx.drawImage(img, 0, 0, newW, newH);
-
+        app.originalImage = img;
         app.currentImage = img;
+        app.scale = ratio;
 
-        saveState();
+        render(); 
     };
+}
+// 🔥 use central render
+function render(){
+    if(!app.originalImage) return;
+
+    const img = app.originalImage;
+
+    let baseW = img.width * app.scale;
+    let baseH = img.height * app.scale;
+
+    let w = baseW * app.zoom;
+    let h = baseH * app.zoom;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    let x = (canvas.width - w)/2;
+    let y = (canvas.height - h)/2;
+
+    ctx.drawImage(img, x, y, w, h);
+
+    // APPLY FILTERS AFTER DRAW
+    applyFilters();
 }
 
 // CLEAR CANVAS
