@@ -3,6 +3,8 @@
 // ==========================
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
+ctx.imageSmoothingEnabled = true;
+ctx.imageSmoothingQuality = "high";
 // GLOBAL STATE
 window.app = {
     canvas,
@@ -35,10 +37,16 @@ function loadImage(file){
         app.currentImage = img;
         app.scale = ratio;
 
+        app.brightness = 100;
+        app.contrast = 100;
+        app.zoom = 1;
+
+        app.offsetX:0,
+        app.offsetY:0, 
         render(); 
     };
 }
-// 🔥 use central render
+// render
 function render(){
     if(!app.originalImage) return;
 
@@ -52,8 +60,8 @@ function render(){
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    let x = (canvas.width - w)/2;
-    let y = (canvas.height - h)/2;
+    let x = (canvas.width - w)/2 + app.offsetX;
+    let y = (canvas.height - h)/2 + app.offsetY;
 
     ctx.drawImage(img, x, y, w, h);
 
@@ -79,6 +87,10 @@ function applyFilters(){
         data[i] = factor * (data[i]-128) + 128;
         data[i+1] = factor * (data[i+1]-128) + 128;
         data[i+2] = factor * (data[i+2]-128) + 128;
+        //clamp values 
+       data[i] = Math.max(0, Math.min(255,data[i]));
+        data[i+1] = Math.max(0, Math.min(255,data[i+1]));
+        data[i+2] = Math.max(0, Math.min(255,data[i+2]));
     }
 
     ctx.putImageData(imageData,0,0);
