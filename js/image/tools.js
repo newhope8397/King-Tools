@@ -95,7 +95,9 @@ function zoom(scale){
 
     ctx.drawImage(app.currentImage, x, y, w, h);
 }
-
+document.getElementById("zoomRange").addEventListener("input", (e)=>{
+    zoom(parseFloat(e.target.value));
+});
 // RESIZE
 function resizeImg(){
     let w = document.getElementById("w").value;
