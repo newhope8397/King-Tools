@@ -30,8 +30,8 @@ function rotate(){
     tempCtx.drawImage(canvas, -canvas.width/2, -canvas.height/2);
 
     const img = new Image();
-    img.src = tempcanvas.todataURL();
- ZOOimg.onload = ()=>{app.originalImage = img;
+    img.src = tempcanvas.toDataURL();
+    img.onload = ()=>{app.originalImage = img;
                       render();
                      };
 }
@@ -50,43 +50,41 @@ function resizeImg(){
     let w = document.getElementById("w").value;
     let h = document.getElementById("h").value;
 
-    let temp = document.createElement("canvas");
-    let tctx = temp.getContext("2d");
+    const tempCanvas = document.createElement("canvas");
+    const tctx = tempCanvas.getContext("2d");
 
-    temp.width = w;
-    temp.height = h;
+    tempCanvas.width = w;
+    tempCanvas.height = h;
 
     tctx.drawImage(canvas,0,0,w,h);
 
+    const img = new Image();
+    img.src = tempCanvas.toDataURL();
+
+    img.onload = ()=>{
     canvas.width = w;
     canvas.height = h;
 
-    ctx.drawImage(temp,0,0);
-    saveState();
-    app.originalImage = new Image();
-app.originalImage.src = canvas.toDataURL();
-
-app.currentImage = new Image();
-app.currentImage.src = canvas.toDataURL();
+     app.originalImage = img;
+     render();
+    
 }
 
 // AI (BASIC PLACEHOLDER)
 function aiEnhance(){
     if(!app.originalImage) return;
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(app.originalImage, 0, 0, canvas.width, canvas.height);
-
-    applyBrightness(20);
+    
+    app.brightness = 120
+    app.contrast = 120;
+    render();
 }
 
 function aiCool(){
     if(!app.originalImage) return;
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(app.originalImage, 0, 0, canvas.width, canvas.height);
-
-    applyBrightness(-20);
+    app.brightness = 90;
+    app.contrast = 110
+    render();
 }
 
 // DOWNLOAD FIX
