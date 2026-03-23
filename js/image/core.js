@@ -9,6 +9,10 @@ window.app = {
     ctx,
     currentImage: null,
     scale: 1
+    isdragging; false,
+    startX:0,
+    startY:0,
+    element:[]
 };
 
 function loadImage(file){
