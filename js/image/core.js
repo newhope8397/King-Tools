@@ -7,12 +7,12 @@ const ctx = canvas.getContext("2d", { willReadFrequently: true });
 window.app = {
     canvas,
     ctx,
+    originalImage: null,
     currentImage: null,
-    scale: 1
-    isdragging; false,
-    startX:0,
-    startY:0,
-    element:[]
+    scale: 1,
+    zoom: 1,
+    brightness:100,
+    contrast:100
 };
 
 function loadImage(file){
