@@ -93,11 +93,32 @@ function render(){
 
     ctx.drawImage(img, x, y, w, h);
 
-    // APPLY FILTERS AFTER DRAW
     applyFilters();
 }
+ //APPLY FILTERS AFTER DRAW 
+function applyFilters(){
+    let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    let data = imageData.data;
 
-// CLEAR CANVAS
+    let brightness = app.brightness - 100;
+    let contrast = app.contrast;
+
+    let factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+    for(let i=0;i<data.length;i+=4){
+        // brightness
+        data[i] += brightness;
+        data[i+1] += brightness;
+        data[i+2] += brightness;
+
+        // contrast
+        data[i] = factor * (data[i]-128) + 128;
+        data[i+1] = factor * (data[i+1]-128) + 128;
+        data[i+2] = factor * (data[i+2]-128) + 128;
+    }
+
+    ctx.putImageData(imageData,0,0);
+}
 
 // EXPORT
 function downloadImage(){
