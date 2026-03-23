@@ -44,12 +44,15 @@ function loadImage(file){
 }
 
 // CLEAR CANVAS
-img.onload = function () {
-    canvas.width = img.width;
-    canvas.height = img.height;
+let scale = Math.min(
+    window.innerWidth / img.width,
+    window.innerHeight / img.height
+);
 
-    ctx.drawImage(img, 0, 0);
-};
+canvas.width = img.width * scale;
+canvas.height = img.height * scale;
+
+ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
 // EXPORT
 function downloadImage(){
