@@ -30,7 +30,7 @@ function rotate(){
     tempCtx.drawImage(canvas, -canvas.width/2, -canvas.height/2);
 
     const img = new Image();
-    img.src = tempcanvas.toDataURL();
+    img.src = tempCanvas.toDataURL();
     img.onload = ()=>{app.originalImage = img;
                       render();
                      };
@@ -68,13 +68,14 @@ function resizeImg(){
      app.originalImage = img;
      render();
     
+  };
 }
 
 // AI (BASIC PLACEHOLDER)
 function aiEnhance(){
     if(!app.originalImage) return;
     
-    app.brightness = 120
+    app.brightness = 120;
     app.contrast = 120;
     render();
 }
@@ -83,7 +84,7 @@ function aiCool(){
     if(!app.originalImage) return;
 
     app.brightness = 90;
-    app.contrast = 110
+    app.contrast = 110;
     render();
 }
 
