@@ -14,7 +14,9 @@ window.app = {
     scale: 1, 
     zoom: 1,
     brightness: 100,
-    contrast: 100
+    contrast: 100,
+    offsetX: 0,
+    offsetY: 0
 };
 
 // LOAD IMAGE
@@ -41,8 +43,8 @@ function loadImage(file){
         app.contrast = 100;
         app.zoom = 1;
 
-        app.offsetX:0,
-        app.offsetY:0, 
+        app.offsetX = 0,
+        app.offsetY = 0, 
         render(); 
     };
 }
