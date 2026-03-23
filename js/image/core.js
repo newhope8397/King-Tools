@@ -44,9 +44,12 @@ function loadImage(file){
 }
 
 // CLEAR CANVAS
-function clearCanvas(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-}
+img.onload = function () {
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    ctx.drawImage(img, 0, 0);
+};
 
 // EXPORT
 function downloadImage(){
