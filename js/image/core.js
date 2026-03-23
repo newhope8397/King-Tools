@@ -3,6 +3,7 @@
 // ==========================
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
+canvas.style.cursor = "grab";
 ctx.imageSmoothingEnabled = true;
 ctx.imageSmoothingQuality = "high";
 
@@ -28,9 +29,12 @@ window.app = {
 
 // MOUSE DOWN
 canvas.addEventListener("mousedown", (e)=>{
+    if(app.zoom <= 1) return;
     app.isDragging = true;
     app.startX = e.clientX;
     app.startY = e.clientY;
+
+    canvas.style.cursor = "grabbing";
 });
 
 // MOUSE MOVE
@@ -53,11 +57,13 @@ canvas.addEventListener("mousemove", (e)=>{
 // MOUSE UP
 canvas.addEventListener("mouseup", ()=>{
     app.isDragging = false;
+    canvas.style.cursor = "grab";
 });
 
 // MOUSE LEAVE (important)
 canvas.addEventListener("mouseleave", ()=>{
     app.isDragging = false;
+    canvas.style.cursor = "grab";
 });
 // TOUCH START
 canvas.addEventListener("touchstart", (e)=>{
@@ -83,6 +89,7 @@ canvas.addEventListener("touchmove", (e)=>{ e.preventDefault();
     app.startX = touch.clientX;
     app.startY = touch.clientY;
 
+    canvas.style.cursor = app.zoom > 1 ? "grab" : "default";                                      
     render();
 });
 
