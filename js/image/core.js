@@ -6,6 +6,22 @@ const ctx = canvas.getContext("2d", { willReadFrequently: true });
 ctx.imageSmoothingEnabled = true;
 ctx.imageSmoothingQuality = "high";
 
+// GLOBAL STATE
+window.app = {
+    canvas,
+    ctx,
+    originalImage: null,
+    currentImage: null,
+    scale: 1, 
+    zoom: 1,
+    brightness: 100,
+    contrast: 100,
+    offsetX: 0,
+    offsetY: 0,
+    isDragging: false,
+    startX: 0,
+    startY: 0
+};
 // ==========================
 // DRAG / PAN SYSTEM
 // ==========================
@@ -20,6 +36,7 @@ canvas.addEventListener("mousedown", (e)=>{
 // MOUSE MOVE
 canvas.addEventListener("mousemove", (e)=>{
     if(!app.isDragging) return;
+    if(app.zoom <= 1) return;
 
     let dx = e.clientX - app.startX;
     let dy = e.clientY - app.startY;
@@ -29,7 +46,6 @@ canvas.addEventListener("mousemove", (e)=>{
 
     app.startX = e.clientX;
     app.startY = e.clientY;
-    if(app.zoom <= 1) return;
 
     render();
 });
@@ -53,9 +69,9 @@ canvas.addEventListener("touchstart", (e)=>{
 });
 
 // TOUCH MOVE
-canvas.addEventListener("touchmove", (e)=>{
+canvas.addEventListener("touchmove", (e)=>{ e.preventDefault();   
     if(!app.isDragging) return;
-
+    if(app.zoom <= 1) return;
     let touch = e.touches[0];
 
     let dx = touch.clientX - app.startX;
@@ -66,7 +82,6 @@ canvas.addEventListener("touchmove", (e)=>{
 
     app.startX = touch.clientX;
     app.startY = touch.clientY;
-    if(app.zoom <= 1) return;
 
     render();
 });
@@ -75,23 +90,6 @@ canvas.addEventListener("touchmove", (e)=>{
 canvas.addEventListener("touchend", ()=>{
     app.isDragging = false;
 });
-// GLOBAL STATE
-window.app = {
-    canvas,
-    ctx,
-    originalImage: null,
-    currentImage: null,
-    scale: 1, 
-    zoom: 1,
-    brightness: 100,
-    contrast: 100,
-    offsetX: 0,
-    offsetY: 0,
-    isDragging: false,
-    startX: 0,
-    startY: 0
-};
-
 // LOAD IMAGE
 function loadImage(file){
     const img = new Image();
