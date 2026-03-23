@@ -5,6 +5,76 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 ctx.imageSmoothingEnabled = true;
 ctx.imageSmoothingQuality = "high";
+
+// ==========================
+// DRAG / PAN SYSTEM
+// ==========================
+
+// MOUSE DOWN
+canvas.addEventListener("mousedown", (e)=>{
+    app.isDragging = true;
+    app.startX = e.clientX;
+    app.startY = e.clientY;
+});
+
+// MOUSE MOVE
+canvas.addEventListener("mousemove", (e)=>{
+    if(!app.isDragging) return;
+
+    let dx = e.clientX - app.startX;
+    let dy = e.clientY - app.startY;
+
+    app.offsetX += dx;
+    app.offsetY += dy;
+
+    app.startX = e.clientX;
+    app.startY = e.clientY;
+    if(app.zoom <= 1) return;
+
+    render();
+});
+
+// MOUSE UP
+canvas.addEventListener("mouseup", ()=>{
+    app.isDragging = false;
+});
+
+// MOUSE LEAVE (important)
+canvas.addEventListener("mouseleave", ()=>{
+    app.isDragging = false;
+});
+// TOUCH START
+canvas.addEventListener("touchstart", (e)=>{
+    let touch = e.touches[0];
+
+    app.isDragging = true;
+    app.startX = touch.clientX;
+    app.startY = touch.clientY;
+});
+
+// TOUCH MOVE
+canvas.addEventListener("touchmove", (e)=>{
+    if(!app.isDragging) return;
+
+    let touch = e.touches[0];
+
+    let dx = touch.clientX - app.startX;
+    let dy = touch.clientY - app.startY;
+
+    app.offsetX += dx;
+    app.offsetY += dy;
+
+    app.startX = touch.clientX;
+    app.startY = touch.clientY;
+    if(app.zoom <= 1) return;
+
+    render();
+});
+
+// TOUCH END
+canvas.addEventListener("touchend", ()=>{
+    app.isDragging = false;
+});
 // GLOBAL STATE
 window.app = {
     canvas,
@@ -16,7 +86,10 @@ window.app = {
     brightness: 100,
     contrast: 100,
     offsetX: 0,
-    offsetY: 0
+    offsetY: 0,
+    isDragging: false,
+    startX: 0,
+    startY: 0
 };
 
 // LOAD IMAGE
@@ -43,8 +116,8 @@ function loadImage(file){
         app.contrast = 100;
         app.zoom = 1;
 
-        app.offsetX = 0,
-        app.offsetY = 0, 
+        app.offsetX = 0;
+        app.offsetY = 0;
         render(); 
     };
 }
