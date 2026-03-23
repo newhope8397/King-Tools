@@ -1,6 +1,8 @@
 // ==========================
 // CORE SYSTEM
 // ==========================
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
 // GLOBAL STATE
 window.app = {
     canvas,
