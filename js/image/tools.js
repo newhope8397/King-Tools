@@ -63,18 +63,11 @@ function rotate(){
 
     tempCtx.drawImage(canvas, -canvas.width/2, -canvas.height/2);
 
-    canvas.width = tempCanvas.width;
-    canvas.height = tempCanvas.height;
-
-    ctx.drawImage(tempCanvas, 0, 0);
-    saveState();
-    let imgData = canvas.toDataURL();
-
-app.originalImage = new Image();
-app.currentImage = new Image();
-
-app.originalImage.src = imgData;
-app.currentImage.src = imgData;
+    const img = new Image();
+    img.src = tempcanvas.todataURL();
+ ZOOimg.onload = ()=>{app.originalImage = img;
+                      render();
+                     };
 }
 
 // ZOOM
