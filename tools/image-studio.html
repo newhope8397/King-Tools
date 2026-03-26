@@ -1,163 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Studio SaaS - King Tools</title>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-
-<style>
-:root{
---bg:#0f172a;
---card:rgba(255,255,255,0.05);
---accent:#7c3aed;
---text:#fff;
-}
-
-body{
-margin:0;
-font-family:sans-serif;
-background:var(--bg);
-color:var(--text);
-}
-
-/* Header */
-header{
-display:flex;
-justify-content:space-between;
-padding:15px;
-background:rgba(0,0,0,0.3);
-}
-
-button{
-background:var(--accent);
-border:none;
-padding:8px 12px;
-color:#fff;
-border-radius:8px;
-cursor:pointer;
-margin:3px;
-}
-
-/* Layout */
-.main{
-display:flex;
-flex-wrap:wrap;
-}
-
-.editor{
-flex:2;
-padding:20px;
-}
-
-.panel{
-flex:1;
-background:var(--card);
-padding:15px;
-}
-
-/* Canvas */
-.canvas-box{
-width:320px;
-height:320px;
-background:#000;
-margin:auto;
-position:relative;
-overflow:hidden;
-border-radius:10px;
-}
-
-canvas{
-position:absolute;
-cursor:grab;
-}
-
-.crop{
-border:2px dashed #fff;
-position:absolute;
-display:none;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Studio - King Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        /* Extra styles only for Image Studio */
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .editor {
+            flex: 2;
+            min-width: 300px;
+        }
+        .panel {
+            flex: 1;
+            min-width: 280px;
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+        }
+        .canvas-box {
+            width: 100%;
+            max-width: 620px;
+            height: 420px;
+            background: #000;
+            margin: 0 auto 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+        }
+        .crop-box {
+            position: absolute;
+            border: 2px dashed var(--neon);
+            background: rgba(103, 232, 249, 0.15);
+            display: none;
+            cursor: move;
+        }
+        button {
+            width: 100%;
+            margin: 6px 0;
+            padding: 12px;
+        }
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
 </head>
-
 <body>
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="logo">👑 <span class="k">K</span>ing Tools</div>
+        <div>
+            <button onclick="window.location.href='../index.html'">Home</button>
+            <button onclick="toggleTheme()">🌙</button>
+        </div>
+    </nav>
 
-<header>
-<div>👑 King Tools - Image Studio</div>
-<div>
-<button onclick="login()">Login</button>
-<button onclick="logout()">Logout</button>
-<span id="user">Guest</span>
-</div>
-</header>
+    <div class="main">
+        <!-- Editor Area -->
+        <div class="editor">
+            <div class="canvas-box" id="canvasBox">
+                <canvas id="canvas"></canvas>
+                <div id="cropBox" class="crop-box"></div>
+            </div>
+            
+            <div style="text-align:center;">
+                <input type="file" id="upload" accept="image/*" style="margin:10px;">
+                <button onclick="downloadImage()">📥 Download Image</button>
+            </div>
+        </div>
 
-<div style="text-align:center;margin:10px;">
-<input type="file" id="upload">
-</div>
+        <!-- Control Panel -->
+        <div class="panel">
+            <h3>🛠 Basic Tools</h3>
+            <button onclick="rotateImage()">↻ Rotate 90°</button>
+            <button onclick="startCropMode()">✂️ Start Crop</button>
+            <button onclick="applyCrop()">✅ Apply Crop</button>
+            <button onclick="undo()">↩️ Undo</button>
 
-<div class="main">
+            <hr>
+            <h3>Zoom</h3>
+            <input type="range" id="zoomSlider" min="0.5" max="3" step="0.1" value="1" class="slider" oninput="zoomImage(this.value)">
 
-<div class="editor">
-<div class="canvas-box" id="box">
-<canvas id="canvas"></canvas>
-<div id="cropBox" class="crop"></div>
-</div>
-</div>
+            <h3>Brightness</h3>
+            <input type="range" id="brightnessSlider" min="50" max="150" value="100" class="slider" oninput="setBrightness(this.value)">
 
-<div class="panel">
+            <h3>Contrast</h3>
+            <input type="range" id="contrastSlider" min="50" max="150" value="100" class="slider" oninput="setContrast(this.value)">
 
-<h3>Tools</h3>
+            <hr>
+            <h3>Resize</h3>
+            <input type="number" id="newWidth" placeholder="Width" style="width:48%; padding:8px;">
+            <input type="number" id="newHeight" placeholder="Height" style="width:48%; padding:8px;">
+            <button onclick="resizeImage()">Resize Image</button>
 
-<button onclick="rotate()">Rotate</button>
-<button onclick="startCrop()">Crop</button>
-<button onclick="applyCrop()">Apply Crop</button>
+            <hr>
+            <h3>Quick Filters</h3>
+            <button onclick="autoEnhance()">✨ Auto Enhance</button>
+            <button onclick="coolFilter()">❄️ Cool Tone</button>
+        </div>
+    </div>
 
-<br>
+    <footer>
+        <p>Image Studio • King Tools • Free for students</p>
+    </footer>
 
-Zoom <input type="range" min="0.5" max="2" step="0.1" value="1" onchange="zoom(this.value)">
+    <script>
+        // ====================== CORE VARIABLES ======================
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const cropBox = document.getElementById("cropBox");
+        let originalImage = null;
+        let currentImage = null;
+        let scale = 1;
+        let zoomLevel = 1;
+        let brightness = 100;
+        let contrast = 100;
+        let offsetX = 0;
+        let offsetY = 0;
+        let isDragging = false;
+        let startX = 0, startY = 0;
 
-<br>
+        // Crop variables
+        let isCropping = false;
+        let cropStartX = 0, cropStartY = 0;
+        let cropEndX = 0, cropEndY = 0;
 
-Brightness <input type="range" min="0" max="200" value="100" oninput="setBrightness(this.value)">
-Contrast <input type="range" min="0" max="200" value="100"   oninput="setContrast(this.value)">
+        // History for Undo
+        let historyStack = [];
 
-<br>
+        // ====================== LOAD IMAGE ======================
+        document.getElementById("upload").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
 
-Width <input type="number" id="w">
-Height <input type="number" id="h">
-<button onclick="resizeImg()">Resize</button>
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
 
-<hr>
+            img.onload = () => {
+                originalImage = img;
+                currentImage = img;
+                resetCanvas();
+                renderImage();
+                saveToHistory();
+            };
+        });
 
-<h3>AI Tools</h3>
-<button onclick="aiEnhance()">Auto Enhance</button>
-<button onclick="aiCool()">Cool Filter</button>
+        function resetCanvas() {
+            const box = document.getElementById("canvasBox");
+            const ratio = Math.min(box.clientWidth / originalImage.width, box.clientHeight / originalImage.height);
+            
+            canvas.width = originalImage.width * ratio;
+            canvas.height = originalImage.height * ratio;
+            scale = ratio;
+            zoomLevel = 1;
+            offsetX = 0;
+            offsetY = 0;
+            brightness = 100;
+            contrast = 100;
 
-<hr>
+            // Reset sliders
+            document.getElementById("zoomSlider").value = 1;
+            document.getElementById("brightnessSlider").value = 100;
+            document.getElementById("contrastSlider").value = 100;
+        }
 
-<h3>SaaS</h3>
-<button onclick="saveProject()">Save</button>
-<button onclick="loadProjects()">My Projects</button>
+        // ====================== RENDER IMAGE ======================
+        function renderImage() {
+            if (!originalImage) return;
 
-<div id="gallery"></div>
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-<hr>
+            const w = originalImage.width * scale * zoomLevel;
+            const h = originalImage.height * scale * zoomLevel;
+            const x = (canvas.width - w) / 2 + offsetX;
+            const y = (canvas.height - h) / 2 + offsetY;
 
-<button onclick="download()">Download</button>
+            ctx.save();
+            ctx.filter = `brightness(\( {brightness}%) contrast( \){contrast}%)`;
+            ctx.drawImage(originalImage, x, y, w, h);
+            ctx.restore();
+        }
 
-</div>
+        // ====================== ROTATE ======================
+        function rotateImage() {
+            if (!originalImage) return;
 
-</div>
-<script src="../js/image/core.js" defer></script>
-<script src="../js/image/history.js" defer></script>
-<script src="../js/image/drag.js" defer></script>
-<script src="../js/image/crop.js" defer></script>
-<script src="../js/image/tools.js" defer></script>
-<script src="../js/image/layers.js" defer></script>
-<script src="../js/image/main.js" defer></script>
+            const tempCanvas = document.createElement("canvas");
+            const tempCtx = tempCanvas.getContext("2d");
+
+            tempCanvas.width = originalImage.height;
+            tempCanvas.height = originalImage.width;
+
+            tempCtx.translate(tempCanvas.width / 2, tempCanvas.height / 2);
+            tempCtx.rotate(Math.PI / 2);
+            tempCtx.drawImage(originalImage, -originalImage.width / 2, -originalImage.height / 2);
+
+            const newImg = new Image();
+            newImg.src = tempCanvas.toDataURL();
+            newImg.onload = () => {
+                originalImage = newImg;
+                currentImage = newImg;
+                renderImage();
+                saveToHistory();
+            };
+        }
+
+        // ====================== ZOOM ======================
+        function zoomImage(val) {
+            zoomLevel = parseFloat(val);
+            renderImage();
+        }
+
+        // ====================== BRIGHTNESS & CONTRAST ======================
+        function setBrightness(val) {
+            brightness = parseFloat(val);
+            renderImage();
+        }
+
+        function setContrast(val) {
+            contrast = parseFloat(val);
+            renderImage();
+        }
+
+        // ====================== CROP ======================
+        function startCropMode() {
+            if (!originalImage) return;
+            isCropping = true;
+            cropBox.style.display = "block";
+            alert("Click and drag on the image to select crop area, then click Apply Crop");
+        }
+
+        function applyCrop() {
+            if (!isCropping || !originalImage) return;
+
+            // Simple crop logic (for better crop we can improve later)
+            const cropWidth = Math.abs(cropEndX - cropStartX);
+            const cropHeight = Math.abs(cropEndY - cropStartY);
+
+            if (cropWidth < 20 || cropHeight < 20) {
+                alert("Crop area too small!");
+                return;
+            }
+
+            const tempCanvas = document.createElement("canvas");
+            const tempCtx = tempCanvas.getContext("2d");
+
+            tempCanvas.width = cropWidth;
+            tempCanvas.height = cropHeight;
+
+            tempCtx.drawImage(
+                canvas,
+                Math.min(cropStartX, cropEndX),
+                Math.min(cropStartY, cropEndY),
+                cropWidth,
+                cropHeight,
+                0, 0, cropWidth, cropHeight
+            );
+
+            const newImg = new Image();
+            newImg.src = tempCanvas.toDataURL();
+            newImg.onload = () => {
+                originalImage = newImg;
+                resetCanvas();
+                renderImage();
+                saveToHistory();
+                cropBox.style.display = "none";
+                isCropping = false;
+            };
+        }
+
+        // ====================== RESIZE ======================
+        function resizeImage() {
+            const newW = parseInt(document.getElementById("newWidth").value);
+            const newH = parseInt(document.getElementById("newHeight").value);
+            if (!newW || !newH || !originalImage) return;
+
+            const tempCanvas = document.createElement("canvas");
+            const tempCtx = tempCanvas.getContext("2d");
+            tempCanvas.width = newW;
+            tempCanvas.height = newH;
+
+            tempCtx.drawImage(originalImage, 0, 0, newW, newH);
+
+            const newImg = new Image();
+            newImg.src = tempCanvas.toDataURL();
+            newImg.onload = () => {
+                originalImage = newImg;
+                resetCanvas();
+                renderImage();
+                saveToHistory();
+            };
+        }
+
+        // ====================== QUICK FILTERS ======================
+        function autoEnhance() {
+            brightness = 115;
+            contrast = 115;
+            document.getElementById("brightnessSlider").value = 115;
+            document.getElementById("contrastSlider").value = 115;
+            renderImage();
+        }
+
+        function coolFilter() {
+            brightness = 95;
+            contrast = 110;
+            document.getElementById("brightnessSlider").value = 95;
+            document.getElementById("contrastSlider").value = 110;
+            renderImage();
+        }
+
+        // ====================== DOWNLOAD ======================
+        function downloadImage() {
+            if (!canvas) return;
+            const link = document.createElement("a");
+            link.download = "king-tools-edited-image.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }
+
+        // ====================== UNDO ======================
+        function saveToHistory() {
+            historyStack.push(canvas.toDataURL());
+            if (historyStack.length > 15) historyStack.shift();
+        }
+
+        function undo() {
+            if (historyStack.length < 2) return;
+            historyStack.pop(); // remove current
+            const previous = historyStack[historyStack.length - 1];
+
+            const img = new Image();
+            img.src = previous;
+            img.onload = () => {
+                originalImage = img;
+                renderImage();
+            };
+        }
+
+        // ====================== DRAG (Pan) ======================
+        canvas.addEventListener("mousedown", (e) => {
+            if (zoomLevel <= 1) return;
+            isDragging = true;
+            startX = e.offsetX;
+            startY = e.offsetY;
+            canvas.style.cursor = "grabbing";
+        });
+
+        canvas.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            offsetX += e.offsetX - startX;
+            offsetY += e.offsetY - startY;
+            startX = e.offsetX;
+            startY = e.offsetY;
+            renderImage();
+        });
+
+        canvas.addEventListener("mouseup", () => {
+            isDragging = false;
+            canvas.style.cursor = "grab";
+        });
+
+        // Touch support (mobile)
+        canvas.addEventListener("touchstart", (e) => {
+            if (zoomLevel <= 1) return;
+            isDragging = true;
+            const touch = e.touches[0];
+            startX = touch.clientX - canvas.getBoundingClientRect().left;
+            startY = touch.clientY - canvas.getBoundingClientRect().top;
+        });
+
+        // ====================== KEYBOARD SHORTCUTS ======================
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "z" && e.ctrlKey) undo();
+        });
+
+        // Initial load message
+        window.onload = () => {
+            document.body.classList.add("loaded");
+            console.log("✅ King Tools Image Studio loaded successfully!");
+        };
+    </script>
 </body>
 </html>
