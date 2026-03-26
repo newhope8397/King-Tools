@@ -1,375 +1,274 @@
 /* ===========================
-   PAGE LOAD ANIMATION
+   KING TOOLS - MODERN EYE-FRIENDLY CSS
+   Glassmorphism + Soft Dark Theme
 =========================== */
-body{
-opacity:0;
-transition:opacity 0.4s ease;
+
+:root {
+    /* Eye-friendly dark base */
+    --bg: #0f172a;           /* Soft deep slate - very comfortable for long use */
+    --glass: rgba(15, 23, 42, 0.75);     /* Slightly warmer glass */
+    --glass-border: rgba(148, 163, 184, 0.25);
+    --accent: #a78bfa;       /* Soft violet accent - less harsh than bright neon */
+    --neon: #67e8f9;         /* Soft cyan for highlights */
+    --text: #f1f5f9;         /* Soft off-white - easier on eyes */
+    --subtext: #cbd5e1;
+    --success: #4ade80;
 }
 
-body.loaded{
-opacity:1;
+body {
+    margin: 0;
+    font-family: 'Poppins', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background 0.4s ease;
+}
+
+/* Light mode (optional - toggle will switch) */
+body.light {
+    --bg: #f8fafc;
+    --glass: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(148, 163, 184, 0.3);
+    --accent: #7c3aed;
+    --neon: #06b6d4;
+    --text: #0f172a;
+    --subtext: #475569;
+}
+
+/* Page load animation */
+body {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+body.loaded {
+    opacity: 1;
 }
 
 /* ===========================
-   ROOT (NEON THEME)
+   NAVBAR & LOGO (Your Crown + K idea)
 =========================== */
-:root{
---bg:#020617;
---glass:rgba(255,255,255,0.05);
---glass-border:rgba(255,255,255,0.1);
---accent:#7c3aed;
---neon:#38bdf8;
---text:#ffffff;
---subtext:#94a3b8;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-/* ===========================
-   GLOBAL SETTINGS
-=========================== */
-html{
-scroll-behavior:smooth;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--neon);
+    text-shadow: 0 0 12px rgba(103, 232, 249, 0.5);
 }
 
-*{
-box-sizing:border-box;
+.logo::before {
+    content: "👑";
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 4px;
 }
 
-/* TRANSITIONS ONLY WHERE NEEDED */
-.card,
-button,
-input,
-.modal-box,
-.canvas-box{
-transition:
-background 0.2s ease,
-color 0.2s ease,
-transform 0.2s ease,
-box-shadow 0.2s ease;
-}
-
-/* GPU BOOST */
-.card,
-button,
-.canvas-box{
-will-change: transform;
-}
-
-/* ===========================
-   BASE
-=========================== */
-body{
-margin:0;
-font-family:Poppins, sans-serif;
-background:radial-gradient(circle at top,#020617,#000);
-color:var(--text);
-overflow-x:hidden;
-}
-
-/* ===========================
-   NAVBAR
-=========================== */
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 20px;
-
-background:var(--glass);
-backdrop-filter: blur(10px);
-border-bottom:1px solid var(--glass-border);
-}
-
-.logo{
-font-size:22px;
-font-weight:bold;
-color:var(--neon);
-text-shadow:0 0 8px var(--neon);
+/* If you want big "K" with crown on top, you can use this instead of text */
+.logo span.k {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--neon);
 }
 
 /* ===========================
    HERO
 =========================== */
-.hero{
-text-align:center;
-padding:60px 20px;
+.hero {
+    text-align: center;
+    padding: 80px 20px 60px;
 }
 
-.hero h1{
-font-size:2.8rem;
-text-shadow:0 0 12px var(--neon);
+.hero h1 {
+    font-size: 2.8rem;
+    margin: 0 0 16px;
+    background: linear-gradient(90deg, var(--neon), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.hero p{
-color:var(--subtext);
+.hero p {
+    color: var(--subtext);
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto 24px;
 }
 
-.hero input{
-padding:12px;
-width:80%;
-max-width:320px;
-border-radius:12px;
-border:none;
-outline:none;
-
-background:var(--glass);
-color:#fff;
-backdrop-filter: blur(10px);
-}
-
-/* ===========================
-   GRID
-=========================== */
-.tools-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-padding:20px;
+.hero input {
+    padding: 14px 20px;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 9999px;
+    border: none;
+    outline: none;
+    background: var(--glass);
+    color: var(--text);
+    backdrop-filter: blur(12px);
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* ===========================
-   CARD
+   TOOLS GRID
 =========================== */
-.card{
-background:var(--glass);
-padding:20px;
-border-radius:16px;
-text-align:center;
-cursor:pointer;
-
-backdrop-filter: blur(12px);
-border:1px solid var(--glass-border);
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    padding: 20px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.card:hover{
-transform:translateY(-6px) scale(1.03);
-box-shadow:0 0 12px var(--neon);
+.card {
+    background: var(--glass);
+    padding: 28px 20px;
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.card h3{
-margin-bottom:10px;
+.card:hover {
+    transform: translateY(-8px) scale(1.04);
+    box-shadow: 0 15px 35px rgba(103, 232, 249, 0.25);
+    border-color: var(--neon);
 }
 
-.card p{
-color:var(--subtext);
-font-size:14px;
+.card h3 {
+    margin: 12px 0 8px;
+    font-size: 1.35rem;
+}
+
+.card p {
+    color: var(--subtext);
+    font-size: 0.95rem;
+}
+
+.card.premium {
+    border-color: #facc15;
+    position: relative;
+}
+
+.card.premium::after {
+    content: "PRO";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    padding: 2px 8px;
+    background: #facc15;
+    color: #000;
+    border-radius: 9999px;
+    font-weight: 600;
 }
 
 /* ===========================
-   BUTTONS
+   BUTTONS & INTERACTIONS
 =========================== */
-button{
-position:relative;
-overflow:hidden;
-
-background:transparent;
-border:1px solid var(--neon);
-padding:8px 14px;
-color:var(--neon);
-border-radius:10px;
-cursor:pointer;
-margin:5px;
+button {
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    border: 1.5px solid var(--neon);
+    color: var(--neon);
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-button:hover{
-background:var(--neon);
-color:#000;
-box-shadow:0 0 10px var(--neon);
+button:hover {
+    background: var(--neon);
+    color: #0f172a;
+    box-shadow: 0 0 20px rgba(103, 232, 249, 0.6);
 }
 
-/* Ripple Effect */
-button::after{
-content:"";
-position:absolute;
-width:0;
-height:0;
-background:rgba(255,255,255,0.3);
-border-radius:50%;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-transition:0.4s;
+button:active::after {
+    width: 200px;
+    height: 200px;
 }
 
-button:active::after{
-width:180px;
-height:180px;
+/* Ripple */
+button::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
 }
 
 /* ===========================
-   MODAL
+   MODALS
 =========================== */
-.modal{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
 }
 
-.modal-box{
-background:var(--glass);
-padding:25px;
-border-radius:16px;
-width:90%;
-max-width:350px;
-
-backdrop-filter: blur(15px);
-border:1px solid var(--glass-border);
-
-animation:modalPop 0.3s ease;
+.modal-box {
+    background: var(--glass);
+    padding: 32px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 380px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ===========================
-   DASHBOARD
+   FOOTER & MISC
 =========================== */
-.container{
-padding:20px;
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--subtext);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--glass-border);
+    margin-top: 40px;
 }
 
-.card-box{
-background:var(--glass);
-padding:15px;
-border-radius:12px;
-
-backdrop-filter: blur(10px);
-border:1px solid var(--glass-border);
+/* Animations */
+@keyframes modalPop {
+    from { transform: scale(0.7) translateY(40px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-/* ===========================
-   IMAGE STUDIO
-=========================== */
-.main{
-display:flex;
-flex-wrap:wrap;
-}
-
-.editor{
-flex:2;
-padding:20px;
-}
-
-.panel{
-flex:1;
-background:var(--glass);
-padding:15px;
-border-radius:12px;
-
-backdrop-filter: blur(12px);
-border:1px solid var(--glass-border);
-}
-
-.canvas-box{
-width:320px;
-height:320px;
-background:#000;
-margin:auto;
-position:relative;
-overflow:hidden;
-border-radius:12px;
-
-box-shadow:0 0 15px rgba(0,0,0,0.5);
-}
-
-canvas{
-position:absolute;
-cursor:grab;
-}
-
-/* Crop */
-.crop{
-border:2px dashed var(--neon);
-position:absolute;
-display:none;
-background:rgba(56,189,248,0.1);
-
-cursor:move;
-resize:both;
-overflow:auto;
-
-box-shadow:0 0 8px var(--neon);
-}
-
-/* Gallery */
-#gallery img{
-width:80px;
-margin:5px;
-border-radius:8px;
-box-shadow:0 0 8px rgba(0,0,0,0.4);
-}
-
-/* Inputs */
-input, select{
-padding:8px;
-border-radius:10px;
-border:none;
-outline:none;
-margin:5px;
-
-background:var(--glass);
-color:#fff;
-}
-
-/* ===========================
-   ANIMATIONS
-=========================== */
-.fade-in{
-animation:fadeIn 0.8s ease forwards;
-}
-
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-.scale-in{
-animation:scaleIn 0.4s ease forwards;
-}
-
-@keyframes scaleIn{
-from{transform:scale(0.9); opacity:0;}
-to{transform:scale(1); opacity:1;}
-}
-
-.loader{
-border:4px solid rgba(255,255,255,0.1);
-border-top:4px solid var(--neon);
-border-radius:50%;
-width:40px;
-height:40px;
-animation:spin 1s linear infinite;
-margin:auto;
-}
-
-@keyframes spin{
-to{transform:rotate(360deg);}
-}
-
-@keyframes modalPop{
-from{transform:scale(0.8); opacity:0;}
-to{transform:scale(1); opacity:1;}
-}
-
-/* ===========================
-   RESPONSIVE
-=========================== */
-@media(max-width:768px){
-
-.hero h1{
-font-size:2rem;
-}
-
-.main{
-flex-direction:column;
-}
-
-.canvas-box{
-width:100%;
-height:300px;
-}
-
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.2rem; }
+    .tools-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+    .card { padding: 20px 16px; }
 }
