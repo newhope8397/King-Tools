@@ -62,28 +62,48 @@ nav {
     z-index: 100;
 }
 
+/* ===========================
+    LOGO (UPGRADED SAFE VERSION)
+=========================== */
+
 .logo {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--neon);
-    text-shadow: 0 0 12px rgba(103, 232, 249, 0.5);
+    gap: 6px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
 }
 
+/* Crown (clean + aligned) */
 .logo::before {
     content: "👑";
-    font-size: 28px;
-    line-height: 1;
-    margin-bottom: 4px;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
-/* If you want big "K" with crown on top, you can use this instead of text */
-.logo span.k {
-    font-size: 32px;
+/* Main K (premium gradient) */
+.logo .k {
+    font-size: 34px;
     font-weight: 900;
-    color: var(--neon);
+    line-height: 1;
+
+    background: linear-gradient(135deg,
+        #facc15,   /* gold */
+        #4ade80,   /* green */
+        #38bdf8    /* blue */
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    filter: drop-shadow(0 0 6px rgba(103, 232, 249, 0.5));
+}
+
+/* Remaining text */
+.logo span:not(.k) {
+    color: var(--text);
+    font-weight: 600;
 }
 
 /* ===========================
