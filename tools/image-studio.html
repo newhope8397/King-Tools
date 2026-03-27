@@ -389,6 +389,23 @@
             startX = touch.clientX - canvas.getBoundingClientRect().left;
             startY = touch.clientY - canvas.getBoundingClientRect().top;
         });
+        
+    canvas.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    offsetX += x - startX;
+    offsetY += y - startY;
+
+    startX = x;
+    startY = y;
+
+    renderImage();
+});
 
         // ====================== KEYBOARD SHORTCUTS ======================
         document.addEventListener("keydown", (e) => {
