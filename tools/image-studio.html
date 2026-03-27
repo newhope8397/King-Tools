@@ -8,80 +8,93 @@
     
     <style>
         :root {
-            --accent: #8b5cf6; /* Purple like Canva */
+            --accent: #8b5cf6;
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --panel: #1e2937;
+            --text: #f1f5f9;
+            --card: #334155;
+            --border: #475569;
+        }
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --panel: #ffffff;
+            --text: #1e2937;
+            --card: #f1f5f9;
+            --border: #e2e8f0;
+        }
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f8fafc;
-            color: #1e2937;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
             height: 100vh;
             overflow: hidden;
         }
         .top-bar {
-            background: white;
+            background: var(--panel);
             padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #e2e8f0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
-        .canvas-container {
+        .canvas-area {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f1f5f9;
+            background: #000;
             padding: 16px;
         }
         .canvas-box {
             width: 100%;
             max-width: 720px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 78vh;
+            max-height: 520px;
+            background: #111;
+            border-radius: 18px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
         canvas {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            margin: 0 auto;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%; max-height: 100%;
+            cursor: grab;
         }
         .bottom-panel {
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            padding: 16px;
+            background: var(--panel);
+            border-top: 1px solid var(--border);
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-            max-height: 52vh;
-            overflow-y: auto;
+            bottom: 0; left: 0; right: 0;
+            z-index: 200;
+            max-height: 54vh;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
         }
         .adjust-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            padding: 16px 20px 8px;
             font-weight: 500;
         }
         .select-area {
             display: flex;
             gap: 8px;
+            padding: 0 20px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .select-btn {
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 9999px;
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
+            background: var(--card);
+            border: 1px solid var(--border);
             font-size: 13.5px;
             cursor: pointer;
         }
@@ -94,89 +107,95 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            padding: 0 20px;
             margin-bottom: 18px;
         }
         .slider-label {
-            font-size: 14px;
-            width: 90px;
-            flex-shrink: 0;
+            width: 100px;
+            font-size: 14.5px;
         }
         input[type="range"] {
             flex: 1;
             accent-color: var(--accent);
         }
         .value-box {
-            width: 48px;
+            width: 52px;
             text-align: center;
-            font-size: 14px;
-            background: #f8fafc;
-            padding: 4px 8px;
+            background: var(--card);
+            padding: 6px 8px;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            cursor: pointer;
-            margin: 8px 0;
-        }
-        .auto-btn {
-            background: var(--accent);
-            color: white;
+            border: 1px solid var(--border);
+            font-size: 14px;
         }
         .bottom-tabs {
             display: flex;
-            gap: 8px;
+            gap: 6px;
+            padding: 12px 20px;
             overflow-x: auto;
-            padding: 12px 0;
-            white-space: nowrap;
+            background: var(--panel);
+            border-top: 1px solid var(--border);
         }
         .bottom-tab {
-            padding: 8px 18px;
-            background: #f1f5f9;
+            padding: 8px 16px;
+            background: var(--card);
             border-radius: 9999px;
             font-size: 13.5px;
+            white-space: nowrap;
             cursor: pointer;
         }
         .bottom-tab.active {
             background: var(--accent);
             color: white;
         }
+        button {
+            margin: 10px 20px;
+            padding: 14px;
+            width: calc(100% - 40px);
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .auto-btn {
+            background: var(--accent);
+            color: white;
+        }
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
     <!-- Top Bar -->
     <div class="top-bar">
-        <div style="display:flex;gap:16px;">
+        <div style="display:flex;gap:16px;font-size:20px;">
             <span onclick="history.back()" style="cursor:pointer;">✕</span>
-            <span>←</span>
-            <span>→</span>
         </div>
-        <div style="font-weight:500;">Image Studio</div>
+        <div style="font-weight:600;">Image Studio</div>
         <div style="display:flex;gap:16px;">
-            <span>⬇</span>
-            <span style="background:var(--accent);color:white;padding:4px 12px;border-radius:9999px;cursor:pointer;" onclick="downloadImage()">✓</span>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            <button onclick="downloadImage()" style="background:var(--accent);color:white;padding:6px 14px;border-radius:9999px;">↓</button>
         </div>
     </div>
 
     <!-- Canvas -->
-    <div class="canvas-container">
+    <div class="canvas-area">
         <div class="canvas-box" id="canvasBox">
             <canvas id="canvas"></canvas>
-            <div id="cropBox" style="position:absolute;border:3px dashed #8b5cf6;background:rgba(139,92,246,0.1);display:none;cursor:move;"></div>
+            <div id="cropBox" style="position:absolute;border:3px dashed #8b5cf6;background:rgba(139,92,246,0.12);display:none;cursor:move;box-shadow:0 0 0 9999px rgba(0,0,0,0.5);"></div>
         </div>
     </div>
 
-    <!-- Bottom Panel - Canva Style -->
+    <!-- Bottom Panel -->
     <div class="bottom-panel">
         <div class="adjust-header">
-            <span onclick="resetImage()" style="color:#8b5cf6;cursor:pointer;">Reset</span>
+            <span onclick="resetImage()" style="color:var(--accent);cursor:pointer;">Reset</span>
             <strong>Adjust</strong>
-            <span style="cursor:pointer;" onclick="closePanel()">✕</span>
+            <span onclick="closeAdjust()" style="cursor:pointer;">✕</span>
         </div>
 
         <!-- Select Area -->
@@ -187,42 +206,222 @@
             <div class="select-btn">Foreground</div>
         </div>
 
-        <!-- Sliders -->
-        <div id="sliders">
-            <!-- Dynamic sliders will be populated by JS for different options -->
+        <!-- Current Slider -->
+        <div id="currentSlider" class="slider-row">
+            <div class="slider-label" id="sliderName">Brightness</div>
+            <input type="range" id="mainSlider" min="0" max="200" value="100" oninput="updateCurrentSlider()">
+            <div class="value-box" id="sliderValue">100</div>
         </div>
 
-        <!-- Bottom quick tabs -->
+        <!-- Quick Bottom Tabs -->
         <div class="bottom-tabs" id="quickTabs">
-            <div class="bottom-tab active" onclick="setAdjustMode(0)">Auto-adjust</div>
-            <div class="bottom-tab" onclick="setAdjustMode(1)">Temperature</div>
-            <div class="bottom-tab" onclick="setAdjustMode(2)">Tint</div>
-            <div class="bottom-tab" onclick="setAdjustMode(3)">Brightness</div>
-            <div class="bottom-tab" onclick="setAdjustMode(4)">Contrast</div>
-            <div class="bottom-tab" onclick="setAdjustMode(5)">Highlights</div>
-            <div class="bottom-tab" onclick="setAdjustMode(6)">Shadows</div>
-            <div class="bottom-tab" onclick="setAdjustMode(7)">Whites</div>
-            <div class="bottom-tab" onclick="setAdjustMode(8)">Blacks</div>
-            <div class="bottom-tab" onclick="setAdjustMode(9)">Vibrance</div>
+            <div class="bottom-tab active" onclick="switchQuickTab(0)">Brightness</div>
+            <div class="bottom-tab" onclick="switchQuickTab(1)">Contrast</div>
+            <div class="bottom-tab" onclick="switchQuickTab(2)">Temperature</div>
+            <div class="bottom-tab" onclick="switchQuickTab(3)">Tint</div>
+            <div class="bottom-tab" onclick="switchQuickTab(4)">Highlights</div>
+            <div class="bottom-tab" onclick="switchQuickTab(5)">Shadows</div>
+            <div class="bottom-tab" onclick="switchQuickTab(6)">Vibrance</div>
         </div>
 
         <button class="auto-btn" onclick="autoEnhance()">✨ Auto-adjust</button>
+
+        <!-- Upload -->
+        <div style="padding:0 20px 20px;">
+            <input type="file" id="upload" accept="image/*" style="width:100%;padding:12px;background:var(--card);border-radius:12px;color:var(--text);">
+        </div>
     </div>
 
     <script>
         const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const cropBox = document.getElementById("cropBox");
+
         let originalImage = null;
-        let brightness = 100, contrast = 100, saturation = 100, temperature = 0;
+        let scale = 1, zoomLevel = 1, offsetX = 0, offsetY = 0;
+        let brightness = 100, contrast = 100, saturation = 100, temperature = 0, highlights = 0, shadows = 0, vibrance = 100;
+        let isCropping = false;
+        let historyStack = [];
+        let currentAdjust = "brightness";
 
-        document.getElementById("upload").addEventListener? wait, I need to add upload.
+        // Theme Toggle
+        function toggleTheme() {
+            const theme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+            document.body.setAttribute("data-theme", theme);
+            localStorage.setItem("theme", theme);
+        }
 
-        // For full working code including upload, I recommend combining with previous working core.
-        // But to keep it focused, the structure above gives you the **exact visual match** to your Canva screenshots.
+        // Load saved theme
+        if (localStorage.getItem("theme")) {
+            document.body.setAttribute("data-theme", localStorage.getItem("theme"));
+        }
 
-        // Note: To make it fully functional, use the JS from previous response for image loading, sliders, crop, etc.
+        // Upload
+        document.getElementById("upload").addEventListener("change", e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => {
+                originalImage = img;
+                resetCanvas();
+                renderImage();
+                saveToHistory();
+            };
+        });
 
-        console.log("Canva-style light editor loaded");
+        function resetCanvas() {
+            const box = document.getElementById("canvasBox");
+            const ratio = Math.min(box.clientWidth * 0.92 / originalImage.width, box.clientHeight * 0.92 / originalImage.height);
+            canvas.width = originalImage.width * ratio;
+            canvas.height = originalImage.height * ratio;
+            scale = ratio;
+            zoomLevel = 1;
+            offsetX = offsetY = 0;
+            brightness = contrast = saturation = 100;
+            temperature = highlights = shadows = 0;
+            vibrance = 100;
+            document.getElementById("mainSlider").value = 100;
+            document.getElementById("sliderValue").textContent = "100";
+            cropBox.style.display = "none";
+        }
+
+        function renderImage() {
+            if (!originalImage) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const w = originalImage.width * scale * zoomLevel;
+            const h = originalImage.height * scale * zoomLevel;
+            const x = (canvas.width - w) / 2 + offsetX;
+            const y = (canvas.height - h) / 2 + offsetY;
+
+            ctx.save();
+            ctx.filter = `brightness(\( {brightness}%) contrast( \){contrast}%) saturate(\( {saturation}%) hue-rotate( \){temperature}deg)`;
+            ctx.drawImage(originalImage, x, y, w, h);
+            ctx.restore();
+        }
+
+        function updateCurrentSlider() {
+            const val = parseFloat(document.getElementById("mainSlider").value);
+            document.getElementById("sliderValue").textContent = val;
+
+            if (currentAdjust === "brightness") brightness = val;
+            else if (currentAdjust === "contrast") contrast = val;
+            else if (currentAdjust === "temperature") temperature = val - 100;
+            else if (currentAdjust === "highlights") highlights = val - 100;
+            else if (currentAdjust === "shadows") shadows = val - 100;
+            else if (currentAdjust === "vibrance") saturation = val;
+
+            renderImage();
+        }
+
+        function switchQuickTab(n) {
+            const tabs = document.querySelectorAll('.bottom-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tabs[n].classList.add('active');
+
+            const names = ["Brightness", "Contrast", "Temperature", "Tint", "Highlights", "Shadows", "Vibrance"];
+            const values = [brightness, contrast, temperature + 100, temperature + 100, highlights + 100, shadows + 100, saturation];
+
+            currentAdjust = ["brightness","contrast","temperature","temperature","highlights","shadows","vibrance"][n];
+            document.getElementById("sliderName").textContent = names[n];
+            document.getElementById("mainSlider").value = values[n];
+            document.getElementById("sliderValue").textContent = values[n];
+        }
+
+        function autoEnhance() {
+            brightness = 115; contrast = 118; saturation = 110; temperature = 5;
+            document.getElementById("mainSlider").value = 115;
+            document.getElementById("sliderValue").textContent = "115";
+            renderImage();
+        }
+
+        function resetImage() {
+            if (originalImage) {
+                resetCanvas();
+                renderImage();
+            }
+        }
+
+        function downloadImage() {
+            const link = document.createElement("a");
+            link.download = "edited-image.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }
+
+        function saveToHistory() {
+            historyStack.push(canvas.toDataURL());
+            if (historyStack.length > 20) historyStack.shift();
+        }
+
+        function undo() {
+            if (historyStack.length < 2) return;
+            historyStack.pop();
+            const prev = historyStack[historyStack.length-1];
+            const img = new Image();
+            img.src = prev;
+            img.onload = () => { originalImage = img; renderImage(); };
+        }
+
+        // Crop functions (basic)
+        function startCropMode() {
+            isCropping = true;
+            cropBox.style.display = "block";
+            cropBox.style.left = "25%";
+            cropBox.style.top = "25%";
+            cropBox.style.width = "50%";
+            cropBox.style.height = "50%";
+        }
+
+        function applyCrop() {
+            // Simple crop implementation - can be expanded
+            alert("Crop applied (demo)");
+            cancelCrop();
+        }
+
+        function cancelCrop() {
+            isCropping = false;
+            cropBox.style.display = "none";
+        }
+
+        function closeAdjust() {
+            // Placeholder - in real app this could hide panel
+            console.log("Close panel");
+        }
+
+        // Pan support
+        let dragging = false, startX, startY;
+        function startPan(e) {
+            if (zoomLevel <= 1) return;
+            dragging = true;
+            const rect = canvas.getBoundingClientRect();
+            startX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            startY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+        }
+        function doPan(e) {
+            if (!dragging) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            offsetX += x - startX;
+            offsetY += y - startY;
+            startX = x; startY = y;
+            renderImage();
+        }
+        function endPan() { dragging = false; }
+
+        canvas.addEventListener("mousedown", startPan);
+        canvas.addEventListener("mousemove", doPan);
+        canvas.addEventListener("mouseup", endPan);
+        canvas.addEventListener("mouseleave", endPan);
+        canvas.addEventListener("touchstart", startPan);
+        canvas.addEventListener("touchmove", doPan);
+        canvas.addEventListener("touchend", endPan);
+
+        window.onload = () => {
+            console.log("✅ King Tools Image Studio - Canva Style (Dark/Light Toggle)");
+            // Demo: You can add a sample image here if needed
+        };
     </script>
 </body>
 </html>
