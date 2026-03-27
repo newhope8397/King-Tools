@@ -197,7 +197,7 @@
             const y = (canvas.height - h) / 2 + offsetY;
 
             ctx.save();
-            ctx.filter = `brightness(\( {brightness}%) contrast( \){contrast}%)`;
+            ctx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
             ctx.drawImage(originalImage, x, y, w, h);
             ctx.restore();
         }
@@ -398,6 +398,11 @@
         // Initial load message
         window.onload = () => {
             document.body.classList.add("loaded");
+
+            const savedTheme =
+                localStorage.getItem("theme");
+            if (savedTheme === "light") {
+             condocument.body.classList.add("light");
             console.log("✅ King Tools Image Studio loaded successfully!");
         };
     </script>
