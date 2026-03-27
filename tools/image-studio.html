@@ -8,51 +8,57 @@
     
     <style>
         :root {
-            --glass: rgba(255,255,255,0.08);
-            --glass-border: rgba(255,255,255,0.15);
+            --glass: rgba(30, 30, 50, 0.95);
+            --glass-border: rgba(255,255,255,0.1);
+            --accent: #00f0ff;
             --neon: #67e8f9;
         }
-        
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0f23, #1a1a2e);
+            background: #0a0a1f;
             color: white;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
-
         .nav {
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
-        .logo { font-size: 24px; font-weight: 600; }
-
+        .logo { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
         .main {
+            height: calc(100vh - 60px);
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
+            position: relative;
         }
-
-        .canvas-box {
-            width: 100%;
-            max-width: 700px;
-            height: 480px;
-            background: #000;
-            margin: 0 auto;
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111;
             position: relative;
             overflow: hidden;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
-
+        .canvas-box {
+            width: 92%;
+            max-width: 720px;
+            height: 82%;
+            max-height: 520px;
+            background: #000;
+            position: relative;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            overflow: hidden;
+        }
         canvas {
             position: absolute;
             top: 50%;
@@ -62,85 +68,99 @@
             max-height: 100%;
             cursor: grab;
         }
-
-        .panel {
+        .bottom-panel {
             background: var(--glass);
-            padding: 20px;
-            border-radius: 20px;
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            padding: 16px 20px 12px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
-
-        .tabs {
+        .tab-contents {
+            max-height: 42vh;
+            overflow-y: auto;
+            padding-bottom: 12px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .bottom-tabs {
             display: flex;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            padding: 5px;
-            margin-bottom: 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 6px;
+            margin-top: 16px;
         }
-
-        .tab {
+        .bottom-tab {
             flex: 1;
-            padding: 12px;
+            padding: 12px 8px;
             text-align: center;
             border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
         }
-
-        .tab.active {
-            background: var(--neon);
-            color: black;
+        .bottom-tab.active {
+            background: var(--accent);
+            color: #000;
             font-weight: 600;
         }
-
-        button {
+        button, .btn {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             margin: 8px 0;
             border: none;
             border-radius: 12px;
-            background: rgba(103, 232, 249, 0.15);
+            background: rgba(103, 232, 249, 0.18);
             color: white;
             font-size: 15px;
             cursor: pointer;
         }
-
-        button:hover {
-            background: rgba(103, 232, 249, 0.3);
-        }
-
+        button:hover, .btn:hover { background: rgba(103, 232, 249, 0.35); }
         .slider {
             width: 100%;
-            margin: 12px 0;
+            margin: 10px 0 4px;
+            accent-color: var(--accent);
         }
-
         .crop-box {
             position: absolute;
-            border: 2px dashed var(--neon);
-            background: rgba(103, 232, 249, 0.1);
-            pointer-events: none;
+            border: 2.5px dashed var(--neon);
+            background: rgba(103, 232, 249, 0.08);
+            cursor: move;
+            display: none;
+            box-shadow: 0 0 0 9999px rgba(0,0,0,0.65);
         }
-
-        .resize-options {
+        .resize-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
             gap: 10px;
-            margin: 15px 0;
+            margin: 14px 0;
         }
-
-        .size-btn {
-            padding: 12px 8px;
-            font-size: 13px;
-            background: rgba(255,255,255,0.1);
-        }
-
+        .label { font-size: 13px; opacity: 0.85; margin: 6px 0 2px; }
         @media (min-width: 992px) {
-            .main {
-                flex-direction: row;
+            .main { flex-direction: row; }
+            .canvas-container { flex: 2; }
+            .bottom-panel {
+                position: static;
+                width: 340px;
+                height: 100%;
+                border-top: none;
+                border-left: 1px solid var(--glass-border);
+                border-radius: 0;
+                box-shadow: none;
+                padding: 20px;
             }
-            .editor { flex: 2; }
-            .panel { flex: 1; min-width: 320px; }
+            .bottom-tabs { display: none; }
+            .tab-contents { max-height: none; }
         }
     </style>
 </head>
@@ -149,265 +169,246 @@
     <nav class="nav">
         <div class="logo">👑 King Tools</div>
         <div>
-            <button onclick="window.location.href='../index.html'">Home</button>
-            <button onclick="toggleTheme()">🌙</button>
+            <button onclick="window.location.href='../index.html'" style="padding:8px 16px; font-size:14px;">Home</button>
         </div>
     </nav>
 
     <div class="main">
-        <!-- Editor -->
-        <div class="editor">
+        <div class="canvas-container">
             <div class="canvas-box" id="canvasBox">
                 <canvas id="canvas"></canvas>
                 <div id="cropBox" class="crop-box"></div>
             </div>
-
-            <div style="text-align:center; margin-top: 15px;">
-                <input type="file" id="upload" accept="image/*">
-                <button onclick="downloadImage()">📥 Download Edited Image</button>
-            </div>
         </div>
 
-        <!-- Control Panel -->
-        <div class="panel">
-            <h3>🖼️ Image Editor</h3>
-
-            <!-- Tabs -->
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab(0)">Basic</div>
-                <div class="tab" onclick="switchTab(1)">Adjust</div>
-                <div class="tab" onclick="switchTab(2)">Resize</div>
-                <div class="tab" onclick="switchTab(3)">Crop</div>
-            </div>
-
-            <!-- Basic Tab -->
-            <div id="tab0" class="tab-content">
-                <button onclick="rotateImage()">↻ Rotate 90°</button>
-                <button onclick="undo()">↩️ Undo Last Change</button>
-                <button onclick="resetImage()">🔄 Reset to Original</button>
-            </div>
-
-            <!-- Adjust Tab -->
-            <div id="tab1" class="tab-content" style="display:none;">
-                <h4>Zoom</h4>
-                <input type="range" id="zoomSlider" min="0.5" max="4" step="0.1" value="1" class="slider" oninput="zoomImage(this.value)">
-
-                <h4>Brightness</h4>
-                <input type="range" id="brightnessSlider" min="50" max="150" value="100" class="slider" oninput="setBrightness(this.value)">
-
-                <h4>Contrast</h4>
-                <input type="range" id="contrastSlider" min="50" max="150" value="100" class="slider" oninput="setContrast(this.value)">
-
-                <button onclick="autoEnhance()">✨ Auto Enhance</button>
-                <button onclick="coolFilter()">❄️ Cool Tone</button>
-            </div>
-
-            <!-- Resize Tab -->
-            <div id="tab2" class="tab-content" style="display:none;">
-                <h4>Quick Sizes</h4>
-                <div class="resize-options">
-                    <button class="size-btn" onclick="quickResize(800,600)">HD (800×600)</button>
-                    <button class="size-btn" onclick="quickResize(1200,800)">1200×800</button>
-                    <button class="size-btn" onclick="quickResize(1920,1080)">Full HD</button>
-                    <button class="size-btn" onclick="quickResize(1080,1080)">Square 1080</button>
+        <!-- Bottom sliding panel -->
+        <div class="bottom-panel">
+            <div class="tab-contents">
+                <!-- Basic -->
+                <div id="content0" class="tab-content active">
+                    <button onclick="rotateImage()">↻ Rotate 90°</button>
+                    <button onclick="flipImage('horizontal')">↔ Flip Horizontal</button>
+                    <button onclick="flipImage('vertical')">↕ Flip Vertical</button>
+                    <button onclick="undo()">↩️ Undo</button>
+                    <button onclick="resetImage()">Reset Image</button>
                 </div>
 
-                <h4>Scale by Percentage</h4>
-                <input type="range" id="percentSlider" min="10" max="200" value="100" class="slider" oninput="resizeByPercent(this.value)">
-                <p style="text-align:center; margin:5px 0;" id="percentValue">100%</p>
+                <!-- Adjust -->
+                <div id="content1" class="tab-content">
+                    <div class="label">Exposure</div>
+                    <input type="range" id="brightness" min="50" max="150" value="100" class="slider" oninput="adjustImage()">
 
-                <button onclick="applyPercentageResize()">Apply Scale</button>
+                    <div class="label">Contrast</div>
+                    <input type="range" id="contrast" min="50" max="150" value="100" class="slider" oninput="adjustImage()">
+
+                    <div class="label">Saturation</div>
+                    <input type="range" id="saturation" min="0" max="200" value="100" class="slider" oninput="adjustImage()">
+
+                    <div class="label">Temperature</div>
+                    <input type="range" id="temperature" min="-50" max="50" value="0" class="slider" oninput="adjustImage()">
+
+                    <div class="label">Highlights</div>
+                    <input type="range" id="highlights" min="-50" max="50" value="0" class="slider" oninput="adjustImage()">
+
+                    <div class="label">Shadows</div>
+                    <input type="range" id="shadows" min="-50" max="50" value="0" class="slider" oninput="adjustImage()">
+
+                    <button onclick="autoAdjust()">Auto Adjust</button>
+                </div>
+
+                <!-- Resize -->
+                <div id="content2" class="tab-content">
+                    <div class="label">Quick Sizes</div>
+                    <div class="resize-grid">
+                        <button class="btn" onclick="quickResize(1080,1080)">Square</button>
+                        <button class="btn" onclick="quickResize(1920,1080)">Landscape</button>
+                        <button class="btn" onclick="quickResize(1080,1920)">Portrait</button>
+                        <button class="btn" onclick="quickResize(1200,800)">1200×800</button>
+                    </div>
+
+                    <div class="label">Scale (%)</div>
+                    <input type="range" id="scaleSlider" min="20" max="200" value="100" class="slider" oninput="updateScale(this.value)">
+                    <p id="scaleText" style="text-align:center; margin:4px 0; font-size:14px;">100%</p>
+
+                    <button onclick="applyScale()">Apply Scale</button>
+                </div>
+
+                <!-- Crop -->
+                <div id="content3" class="tab-content">
+                    <button onclick="startCrop()">Start Crop</button>
+                    <button onclick="applyCrop()">Apply Crop</button>
+                    <button onclick="cancelCrop()">Cancel</button>
+                    <p style="font-size:13px; opacity:0.75; margin-top:12px;">Drag the box over the image to crop</p>
+                </div>
             </div>
 
-            <!-- Crop Tab -->
-            <div id="tab3" class="tab-content" style="display:none;">
-                <button onclick="startCropMode()">✂️ Start Cropping</button>
-                <button onclick="applyCrop()">✅ Apply Crop</button>
-                <button onclick="cancelCrop()">❌ Cancel Crop</button>
-                <p style="font-size:13px; opacity:0.8; margin-top:10px;">
-                    Tip: Click and drag on the image to select area
-                </p>
+            <!-- Bottom navigation tabs -->
+            <div class="bottom-tabs">
+                <div class="bottom-tab active" onclick="switchTab(0)">Basic</div>
+                <div class="bottom-tab" onclick="switchTab(1)">Adjust</div>
+                <div class="bottom-tab" onclick="switchTab(2)">Resize</div>
+                <div class="bottom-tab" onclick="switchTab(3)">Crop</div>
+            </div>
+
+            <div style="text-align:center; margin-top:12px;">
+                <input type="file" id="upload" accept="image/*" style="margin-bottom:8px;">
+                <button onclick="downloadImage()">Download Image</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Core variables
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d", { willReadFrequently: true });
         const cropBox = document.getElementById("cropBox");
 
         let originalImage = null;
-        let currentImage = null;
-        let scale = 1;
-        let zoomLevel = 1;
-        let brightness = 100;
-        let contrast = 100;
+        let brightness = 100, contrast = 100, saturation = 100, temperature = 0, highlights = 0, shadows = 0;
+        let scaleFactor = 1;
         let offsetX = 0, offsetY = 0;
-
-        // Crop variables
+        let zoomLevel = 1;
         let isCropping = false;
-        let cropStartX = 0, cropStartY = 0;
-        let cropEndX = 0, cropEndY = 0;
-        let isDraggingCrop = false;
-
         let historyStack = [];
 
-        // Tab switching
-        function switchTab(n) {
-            document.querySelectorAll('.tab-content').forEach((el, i) => {
-                el.style.display = i === n ? 'block' : 'none';
-            });
-            document.querySelectorAll('.tab').forEach((el, i) => {
-                el.classList.toggle('active', i === n);
-            });
-        }
-
-        // Load Image
-        document.getElementById("upload").addEventListener("change", (e) => {
+        // Load image
+        document.getElementById("upload").addEventListener("change", e => {
             const file = e.target.files[0];
             if (!file) return;
-
             const img = new Image();
             img.src = URL.createObjectURL(file);
-
             img.onload = () => {
                 originalImage = img;
-                currentImage = img;
-                resetCanvas();
-                renderImage();
-                saveToHistory();
+                resetAll();
+                render();
+                saveHistory();
             };
         });
 
-        function resetCanvas() {
+        function resetAll() {
             const box = document.getElementById("canvasBox");
-            const ratio = Math.min(box.clientWidth * 0.9 / originalImage.width, 
-                                 box.clientHeight * 0.9 / originalImage.height);
-            
+            const ratio = Math.min(box.clientWidth * 0.9 / originalImage.width, box.clientHeight * 0.9 / originalImage.height);
             canvas.width = originalImage.width * ratio;
             canvas.height = originalImage.height * ratio;
-            scale = ratio;
+            scaleFactor = ratio;
             zoomLevel = 1;
             offsetX = offsetY = 0;
-            brightness = contrast = 100;
-
-            document.getElementById("zoomSlider").value = 1;
-            document.getElementById("brightnessSlider").value = 100;
-            document.getElementById("contrastSlider").value = 100;
-            document.getElementById("percentSlider").value = 100;
-            document.getElementById("percentValue").textContent = "100%";
+            brightness = contrast = saturation = 100;
+            temperature = highlights = shadows = 0;
+            document.getElementById("brightness").value = 100;
+            document.getElementById("contrast").value = 100;
+            document.getElementById("saturation").value = 100;
+            document.getElementById("temperature").value = 0;
+            document.getElementById("highlights").value = 0;
+            document.getElementById("shadows").value = 0;
+            document.getElementById("scaleSlider").value = 100;
+            document.getElementById("scaleText").textContent = "100%";
+            cropBox.style.display = "none";
         }
 
-        function renderImage() {
+        function render() {
             if (!originalImage) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const w = originalImage.width * scale * zoomLevel;
-            const h = originalImage.height * scale * zoomLevel;
+            const w = originalImage.width * scaleFactor * zoomLevel;
+            const h = originalImage.height * scaleFactor * zoomLevel;
             const x = (canvas.width - w) / 2 + offsetX;
             const y = (canvas.height - h) / 2 + offsetY;
 
             ctx.save();
-            ctx.filter = `brightness(\( {brightness}%) contrast( \){contrast}%)`;
+            ctx.filter = `brightness(\( {brightness}%) contrast( \){contrast}%) saturate(\( {saturation}%) hue-rotate( \){temperature}deg)`;
             ctx.drawImage(originalImage, x, y, w, h);
             ctx.restore();
         }
 
-        // ====================== BASIC ======================
+        function adjustImage() {
+            brightness = parseFloat(document.getElementById("brightness").value);
+            contrast = parseFloat(document.getElementById("contrast").value);
+            saturation = parseFloat(document.getElementById("saturation").value);
+            temperature = parseFloat(document.getElementById("temperature").value);
+            highlights = parseFloat(document.getElementById("highlights").value);
+            shadows = parseFloat(document.getElementById("shadows").value);
+            render();
+        }
+
+        function autoAdjust() {
+            brightness = 112; contrast = 115; saturation = 108; temperature = 3;
+            document.getElementById("brightness").value = 112;
+            document.getElementById("contrast").value = 115;
+            document.getElementById("saturation").value = 108;
+            document.getElementById("temperature").value = 3;
+            render();
+        }
+
+        // Basic tools
         function rotateImage() {
             if (!originalImage) return;
-            const tempCanvas = document.createElement("canvas");
-            const tempCtx = tempCanvas.getContext("2d");
-
-            tempCanvas.width = originalImage.height;
-            tempCanvas.height = originalImage.width;
-
-            tempCtx.translate(tempCanvas.width/2, tempCanvas.height/2);
-            tempCtx.rotate(Math.PI/2);
-            tempCtx.drawImage(originalImage, -originalImage.width/2, -originalImage.height/2);
-
+            const temp = document.createElement("canvas");
+            const tctx = temp.getContext("2d");
+            temp.width = originalImage.height;
+            temp.height = originalImage.width;
+            tctx.translate(temp.width/2, temp.height/2);
+            tctx.rotate(Math.PI/2);
+            tctx.drawImage(originalImage, -originalImage.width/2, -originalImage.height/2);
             const newImg = new Image();
-            newImg.src = tempCanvas.toDataURL();
+            newImg.src = temp.toDataURL();
             newImg.onload = () => {
                 originalImage = newImg;
-                resetCanvas();
-                renderImage();
-                saveToHistory();
+                resetAll();
+                render();
+                saveHistory();
             };
+        }
+
+        function flipImage(dir) {
+            if (!originalImage) return;
+            const temp = document.createElement("canvas");
+            const tctx = temp.getContext("2d");
+            temp.width = originalImage.width;
+            temp.height = originalImage.height;
+            if (dir === 'horizontal') tctx.scale(-1, 1);
+            else tctx.scale(1, -1);
+            tctx.drawImage(originalImage, dir === 'horizontal' ? -temp.width : 0, dir === 'vertical' ? -temp.height : 0);
+            const newImg = new Image();
+            newImg.src = temp.toDataURL();
+            newImg.onload = () => { originalImage = newImg; render(); saveHistory(); };
         }
 
         function resetImage() {
-            if (!originalImage) return;
-            resetCanvas();
-            renderImage();
+            if (originalImage) resetAll();
+            render();
         }
 
-        // ====================== ADJUST ======================
-        function zoomImage(val) {
-            zoomLevel = parseFloat(val);
-            renderImage();
-        }
-
-        function setBrightness(val) {
-            brightness = parseFloat(val);
-            renderImage();
-        }
-
-        function setContrast(val) {
-            contrast = parseFloat(val);
-            renderImage();
-        }
-
-        function autoEnhance() {
-            brightness = 115; contrast = 118;
-            document.getElementById("brightnessSlider").value = 115;
-            document.getElementById("contrastSlider").value = 118;
-            renderImage();
-        }
-
-        function coolFilter() {
-            brightness = 95; contrast = 112;
-            document.getElementById("brightnessSlider").value = 95;
-            document.getElementById("contrastSlider").value = 112;
-            renderImage();
-        }
-
-        // ====================== RESIZE ======================
+        // Resize
         function quickResize(w, h) {
             if (!originalImage) return;
-            const tempCanvas = document.createElement("canvas");
-            const tempCtx = tempCanvas.getContext("2d");
-            tempCanvas.width = w;
-            tempCanvas.height = h;
-
-            tempCtx.drawImage(originalImage, 0, 0, w, h);
-
+            const temp = document.createElement("canvas");
+            const tctx = temp.getContext("2d");
+            temp.width = w; temp.height = h;
+            tctx.drawImage(originalImage, 0, 0, w, h);
             const newImg = new Image();
-            newImg.src = tempCanvas.toDataURL();
+            newImg.src = temp.toDataURL();
             newImg.onload = () => {
                 originalImage = newImg;
-                resetCanvas();
-                renderImage();
-                saveToHistory();
+                resetAll();
+                render();
+                saveHistory();
             };
         }
 
-        function resizeByPercent(val) {
-            document.getElementById("percentValue").textContent = val + "%";
+        function updateScale(val) {
+            document.getElementById("scaleText").textContent = val + "%";
         }
 
-        function applyPercentageResize() {
-            const percent = parseFloat(document.getElementById("percentSlider").value) / 100;
+        function applyScale() {
+            const percent = parseFloat(document.getElementById("scaleSlider").value) / 100;
             if (!originalImage || percent === 1) return;
-
             const newW = Math.round(originalImage.width * percent);
             const newH = Math.round(originalImage.height * percent);
-
             quickResize(newW, newH);
         }
 
-        // ====================== CROP ======================
-        function startCropMode() {
+        // Crop
+        function startCrop() {
             if (!originalImage) return;
             isCropping = true;
             cropBox.style.display = "block";
@@ -415,35 +416,30 @@
             cropBox.style.top = "20%";
             cropBox.style.width = "60%";
             cropBox.style.height = "60%";
-            
-            alert("Now drag inside the image to select crop area");
         }
 
         function applyCrop() {
-            if (!isCropping) return;
-
+            if (!isCropping || !originalImage) return;
             const rect = cropBox.getBoundingClientRect();
-            const canvasRect = canvas.getBoundingClientRect();
+            const cRect = canvas.getBoundingClientRect();
+            const ratio = scaleFactor * zoomLevel;
+            const cropX = (rect.left - cRect.left) / ratio;
+            const cropY = (rect.top - cRect.top) / ratio;
+            const cropW = rect.width / ratio;
+            const cropH = rect.height / ratio;
 
-            const cropX = (rect.left - canvasRect.left) / scale / zoomLevel;
-            const cropY = (rect.top - canvasRect.top) / scale / zoomLevel;
-            const cropW = rect.width / scale / zoomLevel;
-            const cropH = rect.height / scale / zoomLevel;
-
-            const tempCanvas = document.createElement("canvas");
-            const tempCtx = tempCanvas.getContext("2d");
-            tempCanvas.width = cropW;
-            tempCanvas.height = cropH;
-
-            tempCtx.drawImage(originalImage, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
+            const temp = document.createElement("canvas");
+            const tctx = temp.getContext("2d");
+            temp.width = cropW; temp.height = cropH;
+            tctx.drawImage(originalImage, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
 
             const newImg = new Image();
-            newImg.src = tempCanvas.toDataURL();
+            newImg.src = temp.toDataURL();
             newImg.onload = () => {
                 originalImage = newImg;
-                resetCanvas();
-                renderImage();
-                saveToHistory();
+                resetAll();
+                render();
+                saveHistory();
                 cancelCrop();
             };
         }
@@ -453,15 +449,15 @@
             cropBox.style.display = "none";
         }
 
-        // ====================== DOWNLOAD & UNDO ======================
+        // Download & History
         function downloadImage() {
             const link = document.createElement("a");
             link.download = "edited-image.png";
-            link.href = canvas.toDataURL("image/png");
+            link.href = canvas.toDataURL("image/png", 0.95);
             link.click();
         }
 
-        function saveToHistory() {
+        function saveHistory() {
             historyStack.push(canvas.toDataURL());
             if (historyStack.length > 20) historyStack.shift();
         }
@@ -469,46 +465,53 @@
         function undo() {
             if (historyStack.length < 2) return;
             historyStack.pop();
-            const previous = historyStack[historyStack.length - 1];
-
+            const prev = historyStack[historyStack.length - 1];
             const img = new Image();
-            img.src = previous;
-            img.onload = () => {
-                originalImage = img;
-                renderImage();
-            };
+            img.src = prev;
+            img.onload = () => { originalImage = img; render(); };
         }
 
-        // Drag to pan when zoomed
+        // Tab switching
+        function switchTab(n) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('content' + n).classList.add('active');
+            document.querySelectorAll('.bottom-tab').forEach((tab, i) => tab.classList.toggle('active', i === n));
+        }
+
+        // Pan support
         let isDragging = false, startX, startY;
-        canvas.addEventListener("mousedown", (e) => {
-            if (zoomLevel > 1) {
-                isDragging = true;
-                startX = e.offsetX;
-                startY = e.offsetY;
-            }
-        });
+        function startPan(e) {
+            if (zoomLevel <= 1) return;
+            isDragging = true;
+            const rect = canvas.getBoundingClientRect();
+            startX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            startY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+        }
+        function doPan(e) {
+            if (!isDragging) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            offsetX += (x - startX);
+            offsetY += (y - startY);
+            startX = x; startY = y;
+            render();
+        }
+        function endPan() { isDragging = false; }
 
-        canvas.addEventListener("mousemove", (e) => {
-            if (isDragging) {
-                offsetX += e.offsetX - startX;
-                offsetY += e.offsetY - startY;
-                startX = e.offsetX;
-                startY = e.offsetY;
-                renderImage();
-            }
-        });
+        canvas.addEventListener("mousedown", startPan);
+        canvas.addEventListener("mousemove", doPan);
+        canvas.addEventListener("mouseup", endPan);
+        canvas.addEventListener("mouseleave", endPan);
+        canvas.addEventListener("touchstart", startPan);
+        canvas.addEventListener("touchmove", doPan);
+        canvas.addEventListener("touchend", endPan);
 
-        canvas.addEventListener("mouseup", () => isDragging = false);
-
-        // Keyboard
-        document.addEventListener("keydown", e => {
-            if (e.ctrlKey && e.key === "z") undo();
-        });
+        document.addEventListener("keydown", e => { if (e.ctrlKey && e.key === "z") undo(); });
 
         window.onload = () => {
-            console.log("✅ King Tools Image Studio v2 Loaded!");
-            switchTab(0); // Start with Basic tab
+            console.log("✅ Image Studio ready — clean & mobile-friendly");
+            switchTab(0);
         };
     </script>
 </body>
